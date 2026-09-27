@@ -2,10 +2,8 @@ import sqlite3
 import tkinter as tk
 from tkinter import messagebox
 
-
 def get_connection():
   return sqlite3.connect("mycourse.db")
-
 
 def create_table():
   conn = get_connection()
@@ -19,7 +17,6 @@ def create_table():
         features TEXT NOT NULL
     ) """)
 
-  # KASAMA NA RITO ANG MGA KEYWORDS PARA SA SKILLS, CHARACTERISTICS, AT INTERESTS
   courses_data = [
       (
           "BSIT",
@@ -178,7 +175,7 @@ def create_table():
               " human resources, negosyo, benta, pamumuno, leadership,"
               " maasikaso, madaldal, magaling magsalita, interesado sa"
               " negosyo, interesado sa pananalapi, interesado sa paninda,"
-              " benta, palakaibigan, strategic, tsismosa, masipag"
+              " benta, palakaibigan, strategic, masipag"
           ),
           (
               "• Course Overview: Prepares students for managing business"
@@ -192,19 +189,7 @@ def create_table():
           ),
       ),
       (
-          "BSTM",
-          "BS Tourism Management",
-          (
-              "tourism management, pamamahala ng turismo, travel planning,"
-              " pagpaplano ng biyahe, tour guiding, pagga-guide sa turista,"
-              " tour operations, travel agency operations, destination"
-              " management, tourism development, tour guide, customer service,"
-              " serbisyo sa customer, guest relations, hospitality,"
-              " communication, pakikipagkomunikasyon, public speaking, travel"
-              " booking, hotel management, flight attendant, pasyal, interesado"
-              " sa paglalakbay, interesado sa travel, maasikaso,"
-              " palakaibigan, magaling magsalita, adventurous"
-          ),
+          "BSTM", "BS Tourism Management", ("tourism management, pamamahala ng turismo, tourism planning, pagpaplano ng turismo, travel management, pamamahala ng paglalakbay, travel planning, pagpaplano ng biyahe, tour planning, pagpaplano ng tour, tour guiding, pagga-guide sa turista, tour operations, travel agency operations, destination management, tourism development, pagpapaunlad ng turismo, sustainable tourism, napapanatiling turismo, cultural tourism, turismo sa kultura, ecotourism, ekoturismo, adventure tourism, heritage tourism, tour guide, tourist assistance, pagtulong sa turista, customer service, serbisyo sa customer, guest relations, hospitality, mabuting pagtanggap sa bisita, communication, pakikipagkomunikasyon, public speaking, pagsasalita sa publiko, storytelling, pagkukuwento, cultural awareness, foreign language, travel booking, pag-book ng biyahe, reservation management, pamamahala ng reservation, airline operations, airport operations, transportation management, pamamahala ng transportasyon, ticketing, itinerary planning, pagpaplano ng itinerary, travel documentation, passport, visa, hotel management, pamamahala ng hotel, hospitality management, front office operations, guest services, housekeeping management, food and beverage service, event management, pamamahala ng events, resort management, tourism marketing, marketing sa turismo, digital marketing, social media marketing, destination marketing, sales, pagbebenta, entrepreneurship, pagnenegosyo, business management, tourism promotion, promosyon ng turismo, branding, content creation, event planning, pagpaplano ng event, event coordination, conference management, festival management, recreation management, tourism research, pananaliksik sa turismo, data analysis, pagsusuri ng datos, tourism statistics, project management, risk management, crisis management, strategic planning, problem solving, paglutas ng problema, leadership, pamumuno, teamwork, pagtutulungan, time management, organization, pagiging organisado, creativity, pagkamalikhain, adaptability, critical thinking, kritikal na pag-iisip, interpersonal skills, customer relations, professionalism, propesyonalismo"),
           (
               "• Course Overview: Focuses on travel management, tour"
               " operations, cultural heritage, and destination development.\n•"
@@ -220,13 +205,7 @@ def create_table():
           "BSHM",
           "BS Hospitality Management",
           (
-              "hospitality management, hotel management, resort management,"
-              " front office operations, guest services, housekeeping, food"
-              " and beverage, restaurant management, food preparation, culinary"
-              " skills, kasanayan sa pagluluto, cooking, pagluluto, baking,"
-              " pagbe-bake, menu planning, customer service, event management,"
-              " catering, interesado sa pagluluto, interesado sa hotel,"
-              " interesado sa restaurant, masipag, malinis, maasikaso, chef"
+              "hospitality management, pamamahala ng hospitality, hotel management, pamamahala ng hotel, resort management, pamamahala ng resort, accommodation management, pamamahala ng accommodation, hotel operations, operasyon ng hotel, hospitality operations, operasyon ng hospitality, front office operations, operasyon ng front office, front desk, serbisyo sa front desk, guest services, serbisyo sa bisita, guest relations, pakikitungo sa bisita, customer service, serbisyo sa customer, customer relations, pakikitungo sa customer, reservation management, pamamahala ng reservation, booking management, pamamahala ng booking, check-in, check-out, housekeeping, paglilinis at pag-aalaga ng kuwarto, room management, pamamahala ng kuwarto, concierge services, serbisyo ng concierge, food and beverage management, pamamahala ng pagkain at inumin, food service, serbisyo ng pagkain, beverage service, serbisyo ng inumin, restaurant management, pamamahala ng restaurant, restaurant operations, operasyon ng restaurant, food preparation, paghahanda ng pagkain, culinary skills, kasanayan sa pagluluto, cooking, pagluluto, baking, pagbe-bake, menu planning, pagpaplano ng menu, food safety, kaligtasan ng pagkain, food sanitation, kalinisan sa pagkain, sanitation, kalinisan, table service, serbisyo sa mesa, bar service, serbisyo ng inumin, event management, pamamahala ng event, event planning, pagpaplano ng event, event coordination, pagko-coordinate ng event, banquet management, pamamahala ng banquet, catering, serbisyo ng catering, conference management, pamamahala ng conference, wedding coordination, pagko-coordinate ng kasal, function management, pamamahala ng function, business management, pamamahala ng negosyo, operations management, pamamahala ng operasyon, human resource management, pamamahala ng human resources, financial management, pamamahala sa pananalapi, inventory management, pamamahala ng imbentaryo, purchasing, pagbili ng supplies, cost control, pagkontrol sa gastos, sales, pagbebenta, marketing, pagmemerkado, hospitality marketing, marketing sa hospitality, digital marketing, digital na marketing, entrepreneurship, pagnenegosyo, tourism, turismo, travel management, pamamahala ng paglalakbay, tour operations, operasyon ng tour, tour guiding, pagga-guide sa turista, destination management, pamamahala ng destinasyon, travel planning, pagpaplano ng biyahe, health and safety, kalusugan at kaligtasan, emergency response, pagtugon sa emergency, risk management, pamamahala ng panganib, crisis management, pamamahala ng krisis, leadership, pamumuno, teamwork, pagtutulungan, communication, pakikipagkomunikasyon, public speaking, pagsasalita sa publiko, problem solving, paglutas ng problema, critical thinking, kritikal na pag-iisip, interpersonal skills, kasanayan sa pakikitungo sa tao, professionalism, propesyonalismo, time management, pamamahala ng oras, organization, pagiging organisado, creativity, pagkamalikhain, adaptability, kakayahang makibagay, attention to detail, pagiging maingat sa detalye, multitasking, paggawa ng maraming gawain, patience, pasensya, courtesy, pagiging magalang, work ethics, etika sa trabaho"
           ),
           (
               "• Course Overview: Provides expertise in hotel and resort"
@@ -243,12 +222,7 @@ def create_table():
           "BSCRIM",
           "BS Criminology",
           (
-              "criminology, kriminolohiya, criminal justice, law enforcement,"
-              " pagpapatupad ng batas, police, pulis, criminal investigation,"
-              " imbestigasyon, forensic science, crime scene investigation,"
-              " security management, matapang, disiplinado, matipuno,"
-              " interesado sa imbestigasyon, interesado sa pulis, interesado sa"
-              " batas, matulungin, matatag"
+              "criminology, kriminolohiya, criminal justice, hustisyang kriminal, criminal law, batas penal, law enforcement, pagpapatupad ng batas, police administration, pamamahala ng pulisya, police operations, operasyon ng pulisya, public safety, kaligtasan ng publiko, corrections, penology, criminal investigation, imbestigasyon ng krimen, crime investigation, pagsisiyasat ng krimen, crime scene investigation, pagsisiyasat sa lugar ng krimen, evidence collection, pangangalap ng ebidensya, evidence handling, pangangasiwa ng ebidensya, case analysis, pagsusuri ng kaso, interviewing, pakikipanayam, interrogation, pagtatanong, intelligence gathering, pangangalap ng impormasyon, surveillance, pagsubaybay, report writing, pagsulat ng ulat, forensic science, agham pang-forensic, forensic investigation, fingerprint analysis, pagsusuri ng fingerprint, DNA analysis, pagsusuri ng DNA, ballistics, pagsusuri ng baril at bala, toxicology, crime prevention, pag-iwas sa krimen, crime detection, pagtuklas ng krimen, crime analysis, pagsusuri ng krimen, criminal behavior, pag-uugaling kriminal, criminal psychology, sikolohiya ng kriminal, sociology, sosyolohiya, juvenile delinquency, victimology, community policing, security management, pamamahala sa seguridad, risk assessment, pagsusuri ng panganib, emergency response, pagtugon sa emergency, crisis management, pamamahala ng krisis, research, pananaliksik, data analysis, pagsusuri ng datos, critical thinking, kritikal na pag-iisip, problem solving, paglutas ng problema, observation, pagmamasid, communication, pakikipagkomunikasyon, public speaking, pagsasalita sa publiko, teamwork, pagtutulungan, leadership, pamumuno, discipline, disiplina, integrity, integridad, ethics, etika, documentation, dokumentasyon"
           ),
           (
               "• Course Overview: Focuses on law enforcement, crime scene"
@@ -265,11 +239,7 @@ def create_table():
           "BSED",
           "BS Education",
           (
-              "education, edukasyon, teaching, pagtuturo, teacher, guro,"
-              " classroom management, lesson planning, curriculum development,"
-              " student guidance, matiyaga, mahinhin, interesado sa"
-              " pagtuturo, interesado sa bata, matulungin, masipag, magaling"
-              " magpaliwanag"
+              "education, edukasyon, teaching, pagtuturo, teacher, guro, secondary education, edukasyong sekundarya, classroom management, pamamahala ng klase, lesson planning, pagpaplano ng aralin, lesson development, pagbuo ng aralin, curriculum development, pagbuo ng kurikulum, curriculum planning, pagpaplano ng kurikulum, assessment, pagtatasa, student assessment, pagtatasa ng estudyante, educational assessment, pagtatasa sa edukasyon, grading, pagbibigay ng grado, teaching strategies, mga estratehiya sa pagtuturo, teaching methods, mga pamamaraan ng pagtuturo, learning strategies, mga estratehiya sa pagkatuto, active learning, aktibong pagkatuto, collaborative learning, kolaboratibong pagkatuto, experiential learning, pagkatutong batay sa karanasan, student-centered learning, pagkatutong nakasentro sa estudyante, differentiated instruction, angkop na pagtuturo, educational technology, teknolohiyang pang-edukasyon, digital learning, digital na pagkatuto, online teaching, online na pagtuturo, e-learning, elektronikong pagkatuto, learning management system, sistema ng pamamahala sa pagkatuto, educational software, software pang-edukasyon, research, pananaliksik, educational research, pananaliksik sa edukasyon, action research, action research, data analysis, pagsusuri ng datos, academic writing, akademikong pagsulat, communication, pakikipagkomunikasyon, oral communication, pasalitang komunikasyon, written communication, nakasulat na komunikasyon, public speaking, pagsasalita sa publiko, presentation skills, kasanayan sa presentasyon, reading comprehension, pag-unawa sa binabasa, writing skills, kasanayan sa pagsulat, critical thinking, kritikal na pag-iisip, problem solving, paglutas ng problema, creativity, pagkamalikhain, leadership, pamumuno, teamwork, pagtutulungan, interpersonal skills, kasanayan sa pakikitungo sa tao, patience, pasensya, empathy, pag-unawa sa damdamin ng iba, responsibility, responsibilidad, professionalism, propesyonalismo, work ethics, etika sa trabaho, time management, pamamahala ng oras, organization, pagiging organisado, adaptability, kakayahang makibagay, decision making, paggawa ng desisyon, conflict resolution, pagresolba ng alitan, student counseling, pagpapayo sa estudyante, student guidance, paggabay sa estudyante, child development, pag-unlad ng bata, adolescent development, pag-unlad ng kabataan, educational psychology, sikolohiyang pang-edukasyon, learning psychology, sikolohiya ng pagkatuto, motivation, motibasyon, behavior management, pamamahala ng pag-uugali, special education, espesyal na edukasyon, inclusive education, inklusibong edukasyon, multicultural education, multikultural na edukasyon, values education, edukasyon sa pagpapahalaga, moral education, edukasyong moral, community involvement, pakikilahok sa komunidad, parent communication, pakikipag-ugnayan sa magulang, student engagement, pakikilahok ng estudyante, learning environment, kapaligiran sa pagkatuto, classroom organization, pag-aayos ng silid-aralan, educational leadership, pamumuno sa edukasyon, school management, pamamahala ng paaralan, teacher development, pagpapaunlad ng guro, professional development, propesyonal na pagpapaunlad, teaching practice, praktis sa pagtuturo, practice teaching, praktikum sa pagtuturo, microteaching, microteaching, educational planning, pagpaplano sa edukasyon, learning materials, mga materyales sa pagkatuto, instructional materials, mga kagamitang panturo, module development, pagbuo ng module, activity design, pagdidisenyo ng gawain, quiz development, pagbuo ng pagsusulit, test construction, pagbuo ng test, rubric development, pagbuo ng rubric, feedback, puna at mungkahi, student support, suporta sa estudyante, mentoring, paggabay, coaching, pagtuturo at paggabay, facilitation, pagpapadaloy ng talakayan, discussion facilitation, pagpapadaloy ng diskusyon, knowledge sharing, pagbabahagi ng kaalaman, subject mastery, kahusayan sa asignatura, academic support, suportang akademiko"
           ),
           (
               "• Course Overview: Prepares future educators with pedagogy,"
@@ -282,16 +252,7 @@ def create_table():
               " Content Developer."
           ),
       ),
-      (
-          "BSN",
-          "BS Nursing",
-          (
-              "nursing, pag-aalaga ng pasyente, patient care, healthcare,"
-              " medical care, health assessment, vital signs, first aid,"
-              " emergency care, anatomy, physiology, pharmacology, alaga,"
-              " maasikaso, maawain, interesado sa ospital, interesado"
-              " sa medisina, interesado sa gamot, masipag, matulungin"
-          ),
+      ("BSN", "BS Nursing",("nursing, pag-aalaga ng pasyente, nursing care, pangangalaga sa pasyente, patient care, pangangalaga sa pasyente, clinical nursing, klinikal na pag-aalaga, healthcare, pangangalagang pangkalusugan, medical care, pangangalagang medikal, patient assessment, pagsusuri ng pasyente, health assessment, pagsusuri ng kalusugan, vital signs, mga vital signs, blood pressure monitoring, pagsukat ng presyon ng dugo, temperature monitoring, pagsukat ng temperatura, pulse monitoring, pagsukat ng pulso, respiratory assessment, pagsusuri ng paghinga, patient monitoring, pagsubaybay sa pasyente, medication administration, pagbibigay ng gamot, medication safety, kaligtasan sa pagbibigay ng gamot, first aid, pangunang lunas, emergency care, pangangalaga sa emergency, basic life support, pangunahing suporta sa buhay, wound care, pangangalaga sa sugat, infection control, kontrol sa impeksyon, infection prevention, pag-iwas sa impeksyon, health education, edukasyon sa kalusugan, patient education, edukasyon para sa pasyente, health promotion, pagsusulong ng kalusugan, disease prevention, pag-iwas sa sakit, community health, kalusugan ng komunidad, public health, pampublikong kalusugan, maternal health, kalusugan ng ina, child health, kalusugan ng bata, pediatric nursing, pag-aalaga sa mga bata, maternal nursing, pag-aalaga sa ina, geriatric nursing, pag-aalaga sa matatanda, mental health nursing, pag-aalaga sa kalusugang pangkaisipan, medical-surgical nursing, medikal-surgical na pag-aalaga, anatomy, anatomiya, physiology, pisyolohiya, microbiology, mikrobiyolohiya, pharmacology, panggagamot at mga gamot, pathophysiology, patopisyolohiya, nutrition, nutrisyon, nursing diagnosis, diagnosis sa nursing, care planning, pagpaplano ng pangangalaga, nursing interventions, mga interbensyon sa nursing, patient documentation, dokumentasyon ng pasyente, medical records, mga rekord medikal, clinical documentation, klinikal na dokumentasyon, laboratory tests, mga pagsusuri sa laboratoryo, healthcare technology, teknolohiya sa pangangalagang pangkalusugan, medical equipment, kagamitang medikal, critical thinking, kritikal na pag-iisip, clinical judgment, klinikal na pagpapasya, problem solving, paglutas ng problema, decision making, paggawa ng desisyon, communication, pakikipagkomunikasyon, patient communication, pakikipag-usap sa pasyente, empathy, pag-unawa sa damdamin ng iba, compassion, pagmamalasakit, patience, pasensya, teamwork, pagtutulungan, leadership, pamumuno, time management, pamamahala"),
           (
               "• Course Overview: Trains healthcare professionals in clinical"
               " nursing care, patient assessment, and disease prevention.\n•"
@@ -562,14 +523,13 @@ def suggest_course():
 
   canvas.yview_moveto(0)
 
-
 create_table()
 root = tk.Tk()
 root.title("MyCourse")
 root.state("zoomed")
 root.bind("<Escape>", lambda e: root.destroy())
 
-# --- CENTERED HEADER BAR ---
+#eto yung pag ka center ng mycourse
 header = tk.Frame(root, bg="#026307", height=85)
 header.pack(fill="x", side="top")
 
@@ -666,47 +626,23 @@ def create_field(parent, label_text, placeholder):
   e.bind("<FocusOut>", on_out)
   return e
 
-
 entry_name = create_field(card, "Name:", "Ex: Jullian James Casilang")
-entry_chars = create_field(card, "Characteristics:", "Ex: masipag")
+entry_chars = create_field(card, "Characteristics:", "Ex: helpful")
 entry_skills = create_field(card, "Skills:", "Ex: coding")
 entry_interest = create_field(card, "Interest:", "Ex: software")
 
-btn = tk.Button(
-    card,
-    text="Suggested Course:",
-    command=suggest_course,
-    font=("Arial", 11, "bold"),
-    bg="#026307",
-    fg="white",
-    activebackground="#014d06",
-    bd=0,
-    padx=24,
-    pady=7,
-    cursor="hand2",
-)
+btn = tk.Button(card, text="Suggested Course:", command=suggest_course,font=("Arial", 11, "bold"), bg="#026307", fg="white", activebackground="#014d06", bd=0, padx=24, pady=7, cursor="hand2")
 btn.pack(pady=10, anchor="center")
 
-result_outer = tk.Frame(
-    center_container,
-    bg="white",
-    highlightbackground="#026307",
-    highlightthickness=1.5,
-)
+result_outer = tk.Frame(center_container, bg="white", highlightbackground="#026307", highlightthickness=1.5,)
 
-canvas = tk.Canvas(
-    result_outer, bg="white", height=180, highlightthickness=0, width=550
-)
+canvas = tk.Canvas(result_outer, bg="white", height=180, highlightthickness=0, width=550)
 scrollbar = tk.Scrollbar(result_outer, orient="vertical", command=canvas.yview)
 result_frame = tk.Frame(canvas, bg="white")
-
-result_frame.bind(
-    "<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
-)
+result_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
 
 canvas.create_window((275, 0), window=result_frame, anchor="n")
 canvas.configure(yscrollcommand=scrollbar.set)
-
 canvas.pack(side="left", fill="both", expand=True)
 scrollbar.pack(side="right", fill="y")
 
@@ -716,18 +652,8 @@ def _on_mousewheel(event):
 
 
 canvas.bind_all("<MouseWheel>", _on_mousewheel)
-
-reason_label = tk.Label(
-    result_frame,
-    text="",
-    font=("Arial", 10, "bold"),
-    bg="white",
-    wraplength=500,
-    justify="center",
-    fg="#026307",
-)
+reason_label = tk.Label(result_frame, text="", font=("Arial", 10, "bold"), bg="white", wraplength=500, justify="center", fg="#026307")
 reason_label.pack(anchor="center", padx=12, pady=(8, 4))
-
 course_list_frame = tk.Frame(result_frame, bg="white")
 course_list_frame.pack(anchor="center", padx=12, pady=(0, 8), fill="x")
 
