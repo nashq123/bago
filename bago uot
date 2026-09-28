@@ -147,7 +147,7 @@ def create_table():
               " leadership, pamumuno, project management, technical"
               " documentation, safety awareness, maingat, praktikal,"
               " interesado sa kuryente, interesado sa wiring, interesado sa"
-              " makina, interesado sa solar, robotics"
+              " makina, interesado sa solar, robotics, tools, carpenter"
           ),
           (
               "• Course Overview: Focuses on electrical power systems, circuit"
@@ -173,7 +173,7 @@ def create_table():
               " Specialist, HR Officer."
           ),
       ),
-      ("BSTM", "BS Tourism Management", ("tourism management, pamamahala ng turismo, tourism planning, pagpaplano ng turismo, travel management, pamamahala ng paglalakbay, travel planning, pagpaplano ng biyahe, tour planning, pagpaplano ng tour, tour guiding, pagga-guide sa turista, tour operations, travel agency operations, destination management, tourism development, pagpapaunlad ng turismo, sustainable tourism, napapanatiling turismo, cultural tourism, turismo sa kultura, ecotourism, ekoturismo, adventure tourism, heritage tourism, tour guide, tourist assistance, pagtulong sa turista, customer service, serbisyo sa customer, guest relations, hospitality, mabuting pagtanggap sa bisita, communication, pakikipagkomunikasyon, public speaking, pagsasalita sa publiko, storytelling, pagkukuwento, cultural awareness, foreign language, travel booking, pag-book ng biyahe, reservation management, pamamahala ng reservation, airline operations, airport operations, transportation management, pamamahala ng transportasyon, ticketing, itinerary planning, pagpaplano ng itinerary, travel documentation, passport, visa, hotel management, pamamahala ng hotel, hospitality management, front office operations, guest services, housekeeping management, food and beverage service, event management, pamamahala ng events, resort management, tourism marketing, marketing sa turismo, digital marketing, social media marketing, destination marketing, sales, pagbebenta, entrepreneurship, pagnenegosyo, business management, tourism promotion, promosyon ng turismo, branding, content creation, event planning, pagpaplano ng event, event coordination, conference management, festival management, recreation management, tourism research, pananaliksik sa turismo, data analysis, pagsusuri ng datos, tourism statistics, project management, risk management, crisis management, strategic planning, problem solving, paglutas ng problema, leadership, pamumuno, teamwork, pagtutulungan, time management, organization, pagiging organisado, creativity, pagkamalikhain, adaptability, critical thinking, kritikal na pag-iisip, interpersonal skills, customer relations, professionalism, propesyonalismo"),(
+      ("BSTM", "BS Tourism Management", ("tourism management, pamamahala ng turismo, tourism planning, pagpaplano ng turismo, travel management, pamamahala ng paglalakbay, travel planning, pagpaplano ng biyahe, tour planning, pagpaplano ng tour, tour guiding, pagga-guide sa turista, tour operations, travel agency operations, destination management, tourism development, pagpapaunlad ng turismo, sustainable tourism, napapanatiling turismo, cultural tourism, turismo sa kultura, ecotourism, ekoturismo, adventure tourism, heritage tourism, tour guide, tourist assistance, pagtulong sa turista, customer service, serbisyo sa customer, guest relations, hospitality, mabuting pagtanggap sa bisita, communication, pakikipagkomunikasyon, public speaking, pagsasalita sa publiko, storytelling, pagkukuwento, cultural awareness, foreign language, travel booking, pag-book ng biyahe, reservation management, pamamahala ng reservation, airline operations, airport operations, transportation management, pamamahala ng transportasyon, ticketing, itinerary planning, pagpaplano ng itinerary, travel documentation, passport, visa, hotel management, pamamahala ng hotel, hospitality management, front office operations, guest services, housekeeping management, food and beverage service, event management, pamamahala ng events, resort management, tourism marketing, marketing sa turismo, digital marketing, social media marketing, destination marketing, sales, pagbebenta, entrepreneurship, pagnenegosyo, business management, tourism promotion, promosyon ng turismo, branding, content creation, event planning, pagpaplano ng event, event coordination, conference management, festival management, recreation management, tourism research, pananaliksik sa turismo, data analysis, pagsusuri ng datos, tourism statistics, project management, risk management, crisis management, strategic planning, problem solving, paglutas ng problema, leadership, pamumuno, teamwork, pagtutulungan, time management, organization, pagiging organisado, creativity, pagkamalikhain, adaptability, critical thinking, kritikal na pag-iisip, interpersonal skills, customer relations, professionalism, propesyonalismo, airplane, flight, eroplano, paglipad"),(
               "• Course Overview: Focuses on travel management, tour"
               " operations, cultural heritage, and destination development.\n•"
               " Core Subjects: Tour Guiding & Operations, Sustainable Tourism,"
@@ -302,8 +302,14 @@ def show_phinma_details():
   txt_box.pack(fill="both", expand=True)
 
   phinma_features = (
-      "• Mission: PHINMA Education aims to make quality education accessible"
-      " and affordable to underserved youth.\n\n• Active Learning Systems:"
+      "• Mission: To uplift the lives of the low income families in our community. We will pursue the mission by:\n\n" \
+      "1. Providing these families accessible, relevant, and appropriate training and education that leads to employment and an improvement in their economic well-being.\n\n"
+      "2. Producing competent and qualified human resources needed by Metro Dagupan, national, and global industries.\n\n"
+      "3. Facilitating collaboration among government, industry, and the academe as the means to designing programs and curricula that respond to the needs of a developing economy.\n\n"
+      "4. Transforming PHINMA UPang into community that celebrates diversity, cross cultural appreciation, creativity and collaboration and that serves as a model for others.\n\n"
+      "• Vision: By 2025, to be an educational institution, recognized for transforming the lives of its students and their families, especially low income families, for the better; and for the number of students whose lives it has improved.\n\n"
+      "• PHINMA Education seeks to provide quality tertiary education to underserved Filipino youth. Our various learning strategies and interventions equip our students with professional and core work skills to attain gainful employment, whether or not they graduate. By knowing who our students are and where they come from, we are able to tailor our programs to what they want to achieve.\n\n"
+      "• Active Learning Systems:"
       " Employs innovative teaching methodologies such as Student-Centered"
       " Learning, peer coaching, and practical skill modules.\n\n• High Board"
       " Passing Rates: Consistently produces topnotchers and high passing"
@@ -624,10 +630,8 @@ canvas.configure(yscrollcommand=scrollbar.set)
 canvas.pack(side="left", fill="both", expand=True)
 scrollbar.pack(side="right", fill="y")
 
-
 def _on_mousewheel(event):
   canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
-
 
 canvas.bind_all("<MouseWheel>", _on_mousewheel)
 reason_label = tk.Label(result_frame, text="", font=("Arial", 10, "bold"), bg="white", wraplength=500, justify="center", fg="#026307")
