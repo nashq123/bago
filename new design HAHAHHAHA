@@ -1,0 +1,657 @@
+import sqlite3
+import tkinter as tk
+from tkinter import messagebox
+
+
+def get_connection():
+  return sqlite3.connect("mycourse.db")
+
+
+def create_table():
+  conn = get_connection()
+  cur = conn.cursor()
+  cur.execute("""CREATE TABLE IF NOT EXISTS courses (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        course_code TEXT NOT NULL UNIQUE,
+        course_name TEXT NOT NULL,
+        skills TEXT NOT NULL,
+        features TEXT NOT NULL
+    )""")
+
+  cur.execute("SELECT COUNT(*) FROM courses")
+  if cur.fetchone()[0] == 0:
+    courses_data = [
+        (
+            "BSIT",
+            "BS Information Technology",
+            (
+                "coding, information technology, IT, programming, software"
+                " development, web development, mobile app development,"
+                " Python, Java, C, C++, JavaScript, HTML, CSS, SQL, database"
+                " management, debugging, computer hardware, troubleshooting,"
+                " network administration, cybersecurity, UI design, UX design"
+            ),
+            (
+                "• Course Overview: Focuses on practical application of"
+                " technology, software development, and network systems.\n•"
+                " Core Subjects: Web & Mobile Development, Database"
+                " Management, Cybersecurity.\n• Career Opportunities: Software"
+                " Developer, Web Developer, Network Engineer, Systems Analyst."
+            ),
+        ),
+        (
+            "BSCS",
+            "BS Computer Science",
+            (
+                "computer science, CS, programming, algorithms, data"
+                " structures, artificial intelligence, AI, machine learning,"
+                " data science, logic, mathematics, software engineering"
+            ),
+            (
+                "• Course Overview: Emphasizes computing theory, complex"
+                " mathematical algorithms, and advance software engineering.\n•"
+                " Core Subjects: Data Structures & Algorithms, Artificial"
+                " Intelligence, Operating Systems.\n• Career Opportunities:"
+                " Software Engineer, Data Scientist, AI/ML Researcher."
+            ),
+        ),
+        (
+            "BSEE",
+            "BS Electrical Engineering",
+            (
+                "electrical engineering, circuits, electronics, power systems,"
+                " renewable energy, robotics, automation, microcontrollers,"
+                " Arduino, wiring, physics"
+            ),
+            (
+                "• Course Overview: Focuses on electrical power systems,"
+                " circuit design, power distribution, and renewable energy"
+                " technologies.\n• Core Subjects: Electrical Circuits, Power"
+                " Systems, Control Systems.\n• Career Opportunities:"
+                " Electrical Engineer, Power Plant Supervisor, Automation"
+                " Specialist."
+            ),
+        ),
+        (
+            "BSBA",
+            "BS Business Administration",
+            (
+                "business management, entrepreneurship, marketing, sales,"
+                " finance, accounting, human resources, leadership, economics,"
+                " business operations"
+            ),
+            (
+                "• Course Overview: Prepares students for managing business"
+                " operations, marketing, human resources, and"
+                " entrepreneurship.\n• Core Subjects: Strategic Management,"
+                " Financial Management, Principles of Marketing.\n• Career"
+                " Opportunities: Business Operations Manager, Entrepreneur,"
+                " Marketing Specialist."
+            ),
+        ),
+        (
+            "BSTM",
+            "BS Tourism Management",
+            (
+                "tourism, travel planning, tour guiding, hospitality, customer"
+                " service, event management, resort management, flight"
+                " booking, airline operations"
+            ),
+            (
+                "• Course Overview: Focuses on travel management, tour"
+                " operations, cultural heritage, and destination"
+                " development.\n• Core Subjects: Tour Guiding, Sustainable"
+                " Tourism, Destination Marketing.\n• Career Opportunities: Tour"
+                " Manager, Travel Consultant, Flight Attendant."
+            ),
+        ),
+        (
+            "BSHM",
+            "BS Hospitality Management",
+            (
+                "hotel management, restaurant management, culinary, cooking,"
+                " baking, food service, housekeeping, front office, guest"
+                " relations, catering"
+            ),
+            (
+                "• Course Overview: Provides expertise in hotel and resort"
+                " operations, culinary management, and customer service"
+                " excellence.\n• Core Subjects: Front Office Operations,"
+                " Culinary Arts, Housekeeping Management.\n• Career"
+                " Opportunities: Hotel Manager, Cruise Ship Officer, Executive"
+                " Chef."
+            ),
+        ),
+        (
+            "BSCRIM",
+            "BS Criminology",
+            (
+                "criminology, law enforcement, police, criminal investigation,"
+                " forensic science, crime scene, public safety, corrections,"
+                " security"
+            ),
+            (
+                "• Course Overview: Focuses on law enforcement, crime scene"
+                " investigation, forensic science, and public safety.\n• Core"
+                " Subjects: Criminal Law, Forensic Ballistics,"
+                " Criminalistics.\n• Career Opportunities: Law Enforcement"
+                " Officer, Forensic Analyst, Private Investigator."
+            ),
+        ),
+        (
+            "BSED",
+            "BS Education",
+            (
+                "education, teaching, teacher, classroom management, lesson"
+                " planning, pedagogy, child psychology, student guidance"
+            ),
+            (
+                "• Course Overview: Prepares future educators with pedagogy,"
+                " instructional strategies, and child psychology.\n• Core"
+                " Subjects: Educational Psychology, Curriculum Development,"
+                " Practice Teaching.\n• Career Opportunities: Licensed Teacher,"
+                " Academic Coordinator."
+            ),
+        ),
+        (
+            "BSN",
+            "BS Nursing",
+            (
+                "nursing, patient care, healthcare, medical, first aid, vital"
+                " signs, anatomy, physiology, pharmacology, hospital"
+            ),
+            (
+                "• Course Overview: Trains healthcare professionals in clinical"
+                " nursing care, patient assessment, and disease prevention.\n•"
+                " Core Subjects: Anatomy & Physiology, Pharmacology,"
+                " Medical-Surgical Nursing.\n• Career Opportunities:"
+                " Registered Nurse, Clinical Educator, Nurse Manager."
+            ),
+        ),
+        (
+            "BSA",
+            "BS Architecture",
+            (
+                "architecture, drafting, drawing, sketching, building design,"
+                " autocad, 3d modeling, interior design, urban planning"
+            ),
+            (
+                "• Course Overview: Focuses on the art and science of"
+                " designing buildings and structures, blending creativity with"
+                " technical knowledge.\n• Core Subjects: Architectural Design,"
+                " Building Technology, Urban Planning.\n• Career Opportunities:"
+                " Licensed Architect, Urban Planner, Interior Architect."
+            ),
+        ),
+    ]
+    cur.executemany(
+        "INSERT INTO courses (course_code, course_name, skills, features)"
+        " VALUES (?,?,?,?)",
+        courses_data,
+    )
+    conn.commit()
+  conn.close()
+
+
+def draw_rounded_rect(canvas, x1, y1, x2, y2, radius=15, **kwargs):
+  """Helper para sa mga rounded corner shapes."""
+  points = [
+      x1 + radius,
+      y1,
+      x1 + radius,
+      y1,
+      x2 - radius,
+      y1,
+      x2 - radius,
+      y1,
+      x2,
+      y1,
+      x2,
+      y1 + radius,
+      x2,
+      y1 + radius,
+      x2,
+      y2 - radius,
+      x2,
+      y2 - radius,
+      x2,
+      y2,
+      x2 - radius,
+      y2,
+      x2 - radius,
+      y2,
+      x1 + radius,
+      y2,
+      x1 + radius,
+      y2,
+      x1,
+      y2,
+      x1,
+      y2 - radius,
+      x1,
+      y2 - radius,
+      x1,
+      y1 + radius,
+      x1,
+      y1 + radius,
+      x1,
+      y1,
+  ]
+  return canvas.create_polygon(points, **kwargs, smooth=True)
+
+
+class CustomButton(tk.Canvas):
+  """Custom rounded button na may hover effect."""
+
+  def __init__(
+      self,
+      parent,
+      text,
+      command=None,
+      width=220,
+      height=42,
+      radius=12,
+      bg_color="#059669",
+      hover_color="#047857",
+      text_color="white",
+      font=("Segoe UI", 10, "bold"),
+  ):
+    super().__init__(
+        parent,
+        width=width,
+        height=height,
+        bg=parent["bg"],
+        highlightthickness=0,
+    )
+    self.command = command
+    self.bg_color = bg_color
+    self.hover_color = hover_color
+
+    self.rect = draw_rounded_rect(
+        self,
+        2,
+        2,
+        width - 2,
+        height - 2,
+        radius=radius,
+        fill=self.bg_color,
+        outline="",
+    )
+    self.text_draw = self.create_text(
+        width / 2, height / 2, text=text, fill=text_color, font=font
+    )
+
+    self.bind("<Enter>", lambda e: self.itemconfig(self.rect, fill=hover_color))
+    self.bind("<Leave>", lambda e: self.itemconfig(self.rect, fill=bg_color))
+    self.bind("<Button-1>", lambda e: self.command() if self.command else None)
+    self.config(cursor="hand2")
+
+
+def show_phinma_details():
+  phinma_win = tk.Toplevel(root)
+  phinma_win.title("PHINMA Education - Institutional Features")
+  phinma_win.geometry("580x460")
+  phinma_win.config(bg="#F8FAFC")
+  phinma_win.grab_set()
+
+  head_frame = tk.Frame(phinma_win, bg="#0F172A", pady=16)
+  head_frame.pack(fill="x")
+  tk.Label(
+      head_frame,
+      text="PHINMA Education",
+      font=("Segoe UI", 16, "bold"),
+      bg="#0F172A",
+      fg="#34D399",
+  ).pack()
+  tk.Label(
+      head_frame,
+      text="Making Lives Better Through Education",
+      font=("Segoe UI", 10),
+      bg="#0F172A",
+      fg="#94A3B8",
+  ).pack()
+
+  content_frame = tk.Frame(phinma_win, bg="#F8FAFC", padx=20, pady=15)
+  content_frame.pack(fill="both", expand=True)
+
+  txt_box = tk.Text(
+      content_frame,
+      font=("Segoe UI", 10),
+      wrap="word",
+      bg="white",
+      fg="#334155",
+      relief="flat",
+      bd=0,
+      padx=15,
+      pady=15,
+      highlightthickness=1,
+      highlightbackground="#E2E8F0",
+  )
+  txt_box.pack(fill="both", expand=True)
+
+  phinma_features = (
+      "• Mission: To uplift the lives of low-income families through accessible"
+      " and quality education.\n\n• Active Learning Systems: Focuses on"
+      " student-centered learning, practical skills development, and"
+      " industry-aligned programs.\n\n• High Board Passing Rates: Consistently"
+      " produces top performers in Nursing, Criminology, Education, and"
+      " Engineering.\n\n• Financial Assistance: Hawak Kamay (HK) Scholarships"
+      " make college education reachable for all."
+  )
+  txt_box.insert("1.0", phinma_features)
+  txt_box.config(state="disabled")
+
+
+def show_course_details(code, name, features):
+  detail_win = tk.Toplevel(root)
+  detail_win.title(f"{code} - Course Details")
+  detail_win.geometry("520x420")
+  detail_win.config(bg="#F8FAFC")
+  detail_win.grab_set()
+
+  head_frame = tk.Frame(detail_win, bg="#0F172A", pady=16)
+  head_frame.pack(fill="x")
+  tk.Label(
+      head_frame,
+      text=code,
+      font=("Segoe UI", 18, "bold"),
+      bg="#0F172A",
+      fg="#34D399",
+  ).pack()
+  tk.Label(
+      head_frame,
+      text=name,
+      font=("Segoe UI", 11),
+      bg="#0F172A",
+      fg="#94A3B8",
+  ).pack()
+
+  content_frame = tk.Frame(detail_win, bg="#F8FAFC", padx=20, pady=20)
+  content_frame.pack(fill="both", expand=True)
+
+  txt_box = tk.Text(
+      content_frame,
+      font=("Segoe UI", 10),
+      wrap="word",
+      bg="white",
+      fg="#1E293B",
+      relief="flat",
+      bd=0,
+      padx=15,
+      pady=15,
+      highlightthickness=1,
+      highlightbackground="#CBD5E1",
+  )
+  txt_box.pack(fill="both", expand=True)
+  txt_box.insert("1.0", features)
+  txt_box.config(state="disabled")
+
+
+def suggest_course():
+  name = entry_name.get().strip()
+  chars_input = entry_chars.get().lower().strip()
+  skills_input = entry_skills.get().lower().strip()
+  interest_input = entry_interest.get().lower().strip()
+
+  if chars_input.startswith("ex:"):
+    chars_input = ""
+  if skills_input.startswith("ex:"):
+    skills_input = ""
+  if interest_input.startswith("ex:"):
+    interest_input = ""
+
+  for widget in course_list_frame.winfo_children():
+    widget.destroy()
+
+  combined_input = f"{chars_input} {skills_input} {interest_input}".strip()
+
+  if not combined_input:
+    reason_label.config(
+        text="⚠️ Lagyan ng kahit isang input sa Characteristics, Skills, o"
+        " Interest.",
+        fg="#EF4444",
+    )
+    return
+
+  conn = get_connection()
+  cur = conn.cursor()
+  cur.execute("SELECT course_code, course_name, skills, features FROM courses")
+  all_courses = cur.fetchall()
+  conn.close()
+
+  user_keywords = [
+      k.strip()
+      for k in combined_input.replace(",", "|").split("|")
+      if len(k.strip()) >= 2
+  ]
+  words = combined_input.replace(",", " ").split()
+  user_keywords.extend([w.strip() for w in words if len(w.strip()) >= 3])
+  user_keywords = list(set(user_keywords))
+
+  matched = []
+  for course in all_courses:
+    code, c_name, skills_str, features = course
+    db_keywords = [k.strip() for k in skills_str.lower().split(",")]
+
+    score = sum(
+        1
+        for u in user_keywords
+        for c in db_keywords
+        if u == c or u in c.split() or c in u.split()
+    )
+    if score > 0:
+      matched.append((code, c_name, score, features))
+
+  disp_name = f"Hi {name}!" if name and not name.startswith("Ex:") else "Hi!"
+
+  if not matched:
+    reason_label.config(
+        text=(
+            f"{disp_name} Walang nahanap na eksaktong me-match. Subukan ang:"
+            " coding, business, travel, o teaching."
+        ),
+        fg="#EF4444",
+    )
+  else:
+    matched_sorted = sorted(matched, key=lambda x: x[2], reverse=True)
+    reason_label.config(
+        text=(
+            f"✨ {disp_name} Narito ang mga pinakabagay na kurso para sa"
+            " iyo (Click to view):"
+        ),
+        fg="#059669",
+    )
+
+    for code, c_name, score, c_features in matched_sorted:
+      card_btn = tk.Frame(
+          course_list_frame,
+          bg="#F1F5F9",
+          padx=12,
+          pady=10,
+          cursor="hand2",
+          highlightthickness=1,
+          highlightbackground="#CBD5E1",
+      )
+      card_btn.pack(fill="x", pady=5, padx=5)
+
+      lbl_code = tk.Label(
+          card_btn,
+          text=f"🎓 {code}",
+          font=("Segoe UI", 11, "bold"),
+          bg="#F1F5F9",
+          fg="#059669",
+          anchor="w",
+      )
+      lbl_code.pack(fill="x")
+
+      lbl_title = tk.Label(
+          card_btn,
+          text=c_name,
+          font=("Segoe UI", 9),
+          bg="#F1F5F9",
+          fg="#334155",
+          anchor="w",
+      )
+      lbl_title.pack(fill="x")
+
+      def bind_click(f, c=code, n=c_name, feat=c_features):
+        f.bind("<Button-1>", lambda e: show_course_details(c, n, feat))
+        for child in f.winfo_children():
+          child.bind("<Button-1>", lambda e: show_course_details(c, n, feat))
+
+      bind_click(card_btn)
+
+
+# --- APPLICATION INTERFACE ---
+create_table()
+root = tk.Tk()
+root.title("MyCourse - Modern Course Finder")
+root.geometry("960x680")
+root.config(bg="#F8FAFC")
+
+# Top Header
+header = tk.Frame(root, bg="#0F172A", pady=22)
+header.pack(fill="x")
+
+tk.Label(
+    header,
+    text="MyCourse",
+    font=("Segoe UI", 26, "bold"),
+    bg="#0F172A",
+    fg="#34D399",
+).pack()
+tk.Label(
+    header,
+    text="Discover the perfect college course tailored for your future",
+    font=("Segoe UI", 10),
+    bg="#0F172A",
+    fg="#94A3B8",
+).pack(pady=(2, 6))
+
+phinma_link = tk.Label(
+    header,
+    text="Powered by PHINMA Education",
+    font=("Segoe UI", 9, "bold", "underline"),
+    bg="#0F172A",
+    fg="#10B981",
+    cursor="hand2",
+)
+phinma_link.pack()
+phinma_link.bind("<Button-1>", lambda e: show_phinma_details())
+
+# Main Container
+container = tk.Frame(root, bg="#F8FAFC")
+container.pack(fill="both", expand=True, padx=24, pady=20)
+
+# Left Side Panel: Form Card
+input_card = tk.Frame(
+    container,
+    bg="white",
+    padx=22,
+    pady=20,
+    highlightthickness=1,
+    highlightbackground="#E2E8F0",
+)
+input_card.pack(side="left", fill="both", expand=True, padx=(0, 10))
+
+tk.Label(
+    input_card,
+    text="Tell Us About Yourself",
+    font=("Segoe UI", 14, "bold"),
+    bg="white",
+    fg="#0F172A",
+).pack(anchor="w", pady=(0, 12))
+
+
+def create_input_field(parent, label_text, placeholder):
+  tk.Label(
+      parent,
+      text=label_text,
+      font=("Segoe UI", 9, "bold"),
+      bg="white",
+      fg="#475569",
+  ).pack(anchor="w", pady=(6, 2))
+  e = tk.Entry(
+      parent,
+      font=("Segoe UI", 10),
+      bg="#F8FAFC",
+      fg="#0F172A",
+      relief="flat",
+      highlightthickness=1,
+      highlightbackground="#CBD5E1",
+      highlightcolor="#059669",
+  )
+  e.pack(fill="x", ipady=6, ipadx=8, pady=(0, 4))
+  e.insert(0, placeholder)
+
+  def on_in(event):
+    if event.widget.get() == placeholder:
+      event.widget.delete(0, "end")
+
+  def on_out(event):
+    if not event.widget.get():
+      event.widget.insert(0, placeholder)
+
+  e.bind("<FocusIn>", on_in)
+  e.bind("<FocusOut>", on_out)
+  return e
+
+
+entry_name = create_input_field(input_card, "Your Name:", "Ex: Jullian James")
+entry_chars = create_input_field(
+    input_card, "Characteristics:", "Ex: Helpful, Analytical"
+)
+entry_skills = create_input_field(
+    input_card, "Skills:", "Ex: Coding, Mathematics"
+)
+entry_interest = create_input_field(
+    input_card, "Interests:", "Ex: Software, Mobile Apps"
+)
+
+btn_submit = CustomButton(
+    input_card,
+    text="Find Suggested Courses",
+    command=suggest_course,
+    width=250,
+    height=44,
+    bg_color="#059669",
+    hover_color="#047857",
+)
+btn_submit.pack(pady=(16, 0))
+
+# Right Side Panel: Output Card
+result_card = tk.Frame(
+    container,
+    bg="white",
+    padx=18,
+    pady=20,
+    highlightthickness=1,
+    highlightbackground="#E2E8F0",
+)
+result_card.pack(side="right", fill="both", expand=True, padx=(10, 0))
+
+reason_label = tk.Label(
+    result_card,
+    text="Sagutan ang pormularyo sa kaliwa upang makakita ng mungkahi.",
+    font=("Segoe UI", 10, "italic"),
+    bg="white",
+    fg="#64748B",
+    wraplength=340,
+    justify="center",
+)
+reason_label.pack(pady=(0, 12))
+
+canvas = tk.Canvas(result_card, bg="white", highlightthickness=0)
+scrollbar = tk.Scrollbar(result_card, orient="vertical", command=canvas.yview)
+course_list_frame = tk.Frame(canvas, bg="white")
+
+course_list_frame.bind(
+    "<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+)
+canvas.create_window((0, 0), window=course_list_frame, anchor="nw")
+canvas.configure(yscrollcommand=scrollbar.set)
+
+canvas.pack(side="left", fill="both", expand=True)
+scrollbar.pack(side="right", fill="y")
+
+root.mainloop()
