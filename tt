@@ -1,0 +1,779 @@
+    import sqlite3
+    import tkinter as tk
+    from tkinter import messagebox
+
+
+    def get_connection():
+    return sqlite3.connect("mycourse.db")
+
+
+    def create_table():
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""CREATE TABLE IF NOT EXISTS courses (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            course_code TEXT NOT NULL UNIQUE,
+            course_name TEXT NOT NULL,
+            skills TEXT NOT NULL,
+            features TEXT NOT NULL
+        )""")
+
+    cur.execute("SELECT COUNT(*) FROM courses")
+    if cur.fetchone()[0] == 0:
+        courses_data = [
+            (
+                "BSIT",
+                "BS Information Technology",
+                (
+                    "Programming, Coding, Computer Troubleshooting, Hardware Troubleshooting, Software Troubleshooting, Computer Networking, Network Configuration, Database Management, SQL, Web Development, Web Design, Mobile App Development, Software Development, System Administration, Cybersecurity, Information Security, Data Management, Data Analysis, Cloud Computing, Technical Support, IT Support, System Analysis, Systems Development, UI/UX Design, Graphic Design, Computer Hardware, Operating Systems, Computer Maintenance, File Management, Documentation, Research, Problem-Solving, Logical Thinking, Critical Thinking, Communication, Teamwork, Time Management, Project Management, Pagpo-program, Pagko-code, Pag-aayos ng computer, Pag-troubleshoot ng hardware, Pag-troubleshoot ng software, Computer networking, Pag-configure ng network, Pamamahala ng database, SQL, Web development, Web design, Pagbuo ng mobile app, Pagbuo ng software, Pamamahala ng system, Cybersecurity, Seguridad ng impormasyon, Pamamahala ng data, Pagsusuri ng data, Cloud computing, Technical support, IT support, Pagsusuri ng system, Pagbuo ng system, UI/UX design, Graphic design, Computer hardware, Operating systems, Pagpapanatili ng computer, Pamamahala ng files, Dokumentasyon, Pananaliksik, Paglutas ng problema, Lohikal na pag-iisip, Kritikal na pag-iisip, Komunikasyon, Teamwork, Pamamahala ng oras, Pamamahala ng proyekto"
+                ),
+                (
+                    "• Course Overview: Focuses on practical application of"
+                    " technology, software development, and network systems.\n•"
+                    " Core Subjects: Web & Mobile Development, Database"
+                    " Management, Cybersecurity.\n• Career Opportunities: Software"
+                    " Developer, Web Developer, Network Engineer, Systems Analyst."
+                ),
+            ),
+            (
+                "BSCS",
+                "BS Computer Science",
+                (
+                    "Programming, Coding, Algorithms, Data Structures, Software Development, Software Engineering, Object-Oriented Programming, Web Development, Mobile Development, Database Management, SQL, Artificial Intelligence, Machine Learning, Data Science, Data Analysis, Computer Networks, Cybersecurity, Operating Systems, Computer Architecture, Cloud Computing, Game Development, System Design, Algorithm Design, Computational Thinking, Mathematics, Statistics, Research, Debugging, Testing, Problem-Solving, Logical Thinking, Critical Thinking, Communication, Teamwork, Project Management, Pagpo-program, Pagko-code, Algorithms, Data structures, Pagbuo ng software, Software engineering, Object-oriented programming, Web development, Mobile development, Pamamahala ng database, SQL, Artificial intelligence, Machine learning, Data science, Pagsusuri ng data, Computer networks, Cybersecurity, Operating systems, Computer architecture, Cloud computing, Game development, Pagdidisenyo ng system, Pagdidisenyo ng algorithm, Computational thinking, Mathematics, Statistics, Pananaliksik, Pag-debug, Pagsubok ng software, Paglutas ng problema, Lohikal na pag-iisip, Kritikal na pag-iisip, Komunikasyon, Teamwork, Pamamahala ng proyekto"
+                ),
+                (
+                    "• Course Overview: Emphasizes computing theory, complex"
+                    " mathematical algorithms, and advance software engineering.\n•"
+                    " Core Subjects: Data Structures & Algorithms, Artificial"
+                    " Intelligence, Operating Systems.\n• Career Opportunities:"
+                    " Software Engineer, Data Scientist, AI/ML Researcher."
+                ),
+            ),
+            (
+                "BSEE",
+                "BS Electrical Engineering",
+                (
+                    "Electrical Design, Circuit Analysis, Electronics, Electrical Installation, Electrical Wiring, Power Systems, Electrical Machines, Control Systems, Instrumentation, Electrical Measurements, Engineering Mathematics, Physics, Technical Drawing, Computer-Aided Design, CAD, Circuit Simulation, Troubleshooting, Electrical Testing, Safety Practices, Electrical Maintenance, Power Distribution, Renewable Energy, Automation, Project Management, Technical Documentation, Research, Problem-Solving, Critical Thinking, Analytical Skills, Communication, Teamwork, Pagdidisenyo ng electrical system, Pagsusuri ng circuit, Electronics, Electrical installation, Electrical wiring, Power systems, Electrical machines, Control systems, Instrumentation, Pagsukat ng kuryente, Engineering mathematics, Physics, Technical drawing, Computer-aided design, CAD, Circuit simulation, Pag-troubleshoot, Electrical testing, Safety practices, Pagpapanatili ng electrical system, Pamamahagi ng kuryente, Renewable energy, Automation, Pamamahala ng proyekto, Teknikal na dokumentasyon, Pananaliksik, Paglutas ng problema, Kritikal na pag-iisip, Analytical skills, Komunikasyon, Teamwork"
+                ),
+                (
+                    "• Course Overview: Focuses on electrical power systems,"
+                    " circuit design, power distribution, and renewable energy"
+                    " technologies.\n• Core Subjects: Electrical Circuits, Power"
+                    " Systems, Control Systems.\n• Career Opportunities:"
+                    " Electrical Engineer, Power Plant Supervisor, Automation"
+                    " Specialist."
+                ),
+            ),
+            (
+                "BSBA",
+                "BS Business Administration",
+                (
+                    "Business Management, Leadership, Marketing, Digital Marketing, Financial Management, Accounting, Entrepreneurship, Business Planning, Sales, Customer Service, Human Resource Management, Operations Management, Strategic Planning, Business Communication, Public Speaking, Negotiation, Decision-Making, Problem-Solving, Market Research, Data Analysis, Budgeting, Bookkeeping, Project Management, Organization, Time Management, Teamwork, Critical Thinking, Creativity, Networking, Pamamahala ng negosyo, Pamumuno, Marketing, Digital marketing, Pamamahala ng pananalapi, Accounting, Pagnenegosyo, Pagpaplano ng negosyo, Sales, Customer service, Pamamahala ng human resources, Pamamahala ng operasyon, Strategic planning, Komunikasyon sa negosyo, Pagsasalita sa publiko, Negotiation, Pagdedesisyon, Paglutas ng problema, Market research, Pagsusuri ng data, Pagbabadyet, Bookkeeping, Pamamahala ng proyekto, Organisasyon, Pamamahala ng oras, Teamwork, Kritikal na pag-iisip, Pagkamalikhain, Networking"
+                ),
+                (
+                    "• Course Overview: Prepares students for managing business"
+                    " operations, marketing, human resources, and"
+                    " entrepreneurship.\n• Core Subjects: Strategic Management,"
+                    " Financial Management, Principles of Marketing.\n• Career"
+                    " Opportunities: Business Operations Manager, Entrepreneur,"
+                    " Marketing Specialist."
+                ),
+            ),
+            (
+                "BSTM",
+                "BS Tourism Management",
+                (
+                    "Tour Planning, Travel Planning, Tour Guiding, Customer Service, Travel Management, Event Planning, Event Management, Hospitality, Hotel Operations, Reservation Management, Ticketing, Travel Agency Operations, Tourism Marketing, Destination Management, Cultural Awareness, Foreign Language, Communication, Public Speaking, Presentation Skills, Problem-Solving, Leadership, Teamwork, Organization, Time Management, Sales, Marketing, Research, Business Planning, Guest Relations, Pagpaplano ng tour, Pagpaplano ng biyahe, Tour guiding, Serbisyo sa customer, Pamamahala ng paglalakbay, Pagpaplano ng event, Pamamahala ng event, Hospitality, Hotel operations, Pamamahala ng reservation, Ticketing, Pamamahala ng travel agency, Tourism marketing, Pamamahala ng destinasyon, Kaalaman sa kultura, Wikang banyaga, Komunikasyon, Pagsasalita sa publiko, Presentation skills, Paglutas ng problema, Pamumuno, Teamwork, Organisasyon, Pamamahala ng oras, Sales, Marketing, Pananaliksik, Pagpaplano ng negosyo, Pakikitungo sa bisita"
+                ),
+                (
+                    "• Course Overview: Focuses on travel management, tour"
+                    " operations, cultural heritage, and destination"
+                    " development.\n• Core Subjects: Tour Guiding, Sustainable"
+                    " Tourism, Destination Marketing.\n• Career Opportunities: Tour"
+                    " Manager, Travel Consultant, Flight Attendant."
+                ),
+            ),
+            (
+                "BSHM",
+                "BS Hospitality Management",
+                (
+                    "Customer Service, Food Preparation, Cooking, Baking, Food and Beverage Service, Housekeeping, Front Office Operations, Hotel Management, Restaurant Management, Event Management, Hospitality Management, Guest Relations, Reservation Management, Food Safety, Sanitation, Inventory Management, Menu Planning, Table Setting, Bar Service, Kitchen Management, Communication, Leadership, Teamwork, Problem-Solving, Organization, Time Management, Marketing, Sales, Entrepreneurship, Serbisyo sa customer, Paghahanda ng pagkain, Pagluluto, Baking, Food and beverage service, Housekeeping, Front office operations, Pamamahala ng hotel, Pamamahala ng restaurant, Pamamahala ng event, Hospitality management, Pakikitungo sa bisita, Pamamahala ng reservation, Food safety, Kalinisan at sanitation, Pamamahala ng inventory, Pagpaplano ng menu, Paghahanda ng mesa, Bar service, Pamamahala ng kusina, Komunikasyon, Pamumuno, Teamwork, Paglutas ng problema, Organisasyon, Pamamahala ng oras, Marketing, Sales, Pagnenegosyo"
+                ),
+                (
+                    "• Course Overview: Provides expertise in hotel and resort"
+                    " operations, culinary management, and customer service"
+                    " excellence.\n• Core Subjects: Front Office Operations,"
+                    " Culinary Arts, Housekeeping Management.\n• Career"
+                    " Opportunities: Hotel Manager, Cruise Ship Officer, Executive"
+                    " Chef."
+                ),
+            ),
+            (
+                "BSCRIM",
+                "BS Criminology",
+                (
+                    "Criminal Investigation, Crime Prevention, Law Enforcement, Criminal Justice, Forensic Science, Crime Scene Investigation, Evidence Handling, Report Writing, Interviewing, Interrogation, Observation, Surveillance, Public Safety, Security Management, Philippine Law, Criminal Law, Legal Research, Communication, Critical Thinking, Problem-Solving, Decision-Making, Leadership, Teamwork, Research, Documentation, Community Relations, Disaster Response, Imbestigasyon sa krimen, Pag-iwas sa krimen, Pagpapatupad ng batas, Criminal justice, Forensic science, Crime scene investigation, Pangangasiwa ng ebidensya, Pagsulat ng report, Interviewing, Interrogation, Pagmamasid, Surveillance, Kaligtasan ng publiko, Security management, Batas ng Pilipinas, Criminal law, Legal research, Komunikasyon, Kritikal na pag-iisip, Paglutas ng problema, Pagdedesisyon, Pamumuno, Teamwork, Pananaliksik, Dokumentasyon, Pakikipag-ugnayan sa komunidad, Pagtugon sa sakuna"
+                ),
+                (
+                    "• Course Overview: Focuses on law enforcement, crime scene"
+                    " investigation, forensic science, and public safety.\n• Core"
+                    " Subjects: Criminal Law, Forensic Ballistics,"
+                    " Criminalistics.\n• Career Opportunities: Law Enforcement"
+                    " Officer, Forensic Analyst, Private Investigator."
+                ),
+            ),
+            (
+                "BSED",
+                "BS Education",
+                (
+                    "Teaching, Lesson Planning, Classroom Management, Educational Assessment, Curriculum Development, Instructional Design, Communication, Public Speaking, Presentation Skills, Educational Technology, Research, Student Counseling, Student Engagement, Subject-Matter Knowledge, Learning Strategies, Leadership, Creativity, Critical Thinking, Problem-Solving, Time Management, Organization, Teamwork, Patience, Adaptability, Writing, Reading, Evaluation, Pagtuturo, Pagpaplano ng lesson, Pamamahala ng classroom, Pagtatasa ng estudyante, Pagbuo ng curriculum, Pagdidisenyo ng instruction, Komunikasyon, Pagsasalita sa publiko, Presentation skills, Educational technology, Pananaliksik, Pagpapayo sa estudyante, Pakikilahok ng estudyante, Kaalaman sa asignatura, Learning strategies, Pamumuno, Pagkamalikhain, Kritikal na pag-iisip, Paglutas ng problema, Pamamahala ng oras, Organisasyon, Teamwork, Pasensya, Kakayahang umangkop, Pagsulat, Pagbabasa, Pagsusuri"
+                ),
+                (
+                    "• Course Overview: Prepares future educators with pedagogy,"
+                    " instructional strategies, and child psychology.\n• Core"
+                    " Subjects: Educational Psychology, Curriculum Development,"
+                    " Practice Teaching.\n• Career Opportunities: Licensed Teacher,"
+                    " Academic Coordinator."
+                ),
+            ),
+            (
+                "BSN",
+                "BS Nursing",
+                (
+                    "Patient Care, Nursing Care, Clinical Skills, Health Assessment, First Aid, Basic Life Support, Emergency Care, Medication Management, Nursing Procedures, Patient Education, Health Promotion, Disease Prevention, Vital Signs Monitoring, Patient Monitoring, Infection Control, Wound Care, Documentation, Medical Terminology, Communication, Teamwork, Critical Thinking, Problem-Solving, Time Management, Observation, Compassion, Empathy, Stress Management, Research, Leadership, Pangangalaga sa pasyente, Nursing care, Kasanayang klinikal, Pagsusuri sa kalagayan ng pasyente, First aid, Basic life support, Emergency care, Pamamahala ng gamot, Nursing procedures, Pagtuturo sa pasyente, Pagpapaunlad ng kalusugan, Pag-iwas sa sakit, Pagsubaybay sa vital signs, Pagsubaybay sa pasyente, Infection control, Pangangalaga ng sugat, Dokumentasyon, Medical terminology, Komunikasyon, Teamwork, Kritikal na pag-iisip, Paglutas ng problema, Pamamahala ng oras, Pagmamasid, Pagmamalasakit, Empathy, Pamamahala ng stress, Pananaliksik, Pamumuno"
+                ),
+                (
+                    "• Course Overview: Trains healthcare professionals in clinical"
+                    " nursing care, patient assessment, and disease prevention.\n•"
+                    " Core Subjects: Anatomy & Physiology, Pharmacology,"
+                    " Medical-Surgical Nursing.\n• Career Opportunities:"
+                    " Registered Nurse, Clinical Educator, Nurse Manager."
+                ),
+            ),
+            (
+                "BSA",
+                "BS Architecture",
+                (
+                    "Architectural Design, Building Design, Drafting, Technical Drawing, Computer-Aided Design, CAD, 3D Modeling, 3D Rendering, Space Planning, Interior Design, Site Planning, Urban Planning, Building Materials, Construction Knowledge, Structural Concepts, Architectural Visualization, Sketching, Perspective Drawing, Model Making, Mathematics, Research, Environmental Design, Sustainable Design, Creativity, Problem-Solving, Critical Thinking, Project Management, Presentation Skills, Communication, Teamwork, Pagdidisenyo ng gusali, Building design, Drafting, Technical drawing, Computer-aided design, CAD, 3D modeling, 3D rendering, Pagpaplano ng espasyo, Interior design, Site planning, Urban planning, Mga materyales sa gusali, Kaalaman sa construction, Structural concepts, Architectural visualization, Sketching, Perspective drawing, Paggawa ng architectural model, Mathematics, Pananaliksik, Environmental design, Sustainable design, Pagkamalikhain, Paglutas ng problema, Kritikal na pag-iisip, Pamamahala ng proyekto, Presentation skills, Komunikasyon, Teamwork"
+                ),
+                (
+                    "• Course Overview: Focuses on the art and science of"
+                    " designing buildings and structures, blending creativity with"
+                    " technical knowledge.\n• Core Subjects: Architectural Design,"
+                    " Building Technology, Urban Planning.\n• Career Opportunities:"
+                    " Licensed Architect, Urban Planner, Interior Architect."
+                ),
+            ),
+            (
+                "BSML"
+                "BS Medical Laboratory Science"
+                (
+                "Laboratory Testing, Clinical Laboratory Skills, Blood Testing, Urinalysis, Hematology, Clinical Chemistry, Microbiology, Immunology, Immunohematology, Parasitology, Histopathology, Specimen Collection, Specimen Processing, Microscope Handling, Laboratory Equipment, Medical Terminology, Quality Control, Infection Control, Data Recording, Documentation, Research, Analytical Skills, Critical Thinking, Attention to Detail, Problem-Solving, Communication, Teamwork, Time Management, Pagsusuri sa laboratoryo, Kasanayan sa clinical laboratory, Pagsusuri ng dugo, Urinalysis, Hematology, Clinical chemistry, Microbiology, Immunology, Immunohematology, Parasitology, Histopathology, Pagkuha ng specimen, Pagproseso ng specimen, Paggamit ng microscope, Paggamit ng laboratory equipment, Medical terminology, Quality control, Infection control, Pagtatala ng data, Dokumentasyon, Pananaliksik, Analytical skills, Kritikal na pag-iisip, Pansin sa detalye, Paglutas ng problema, Komunikasyon, Teamwork, Pamamahala ng oras"
+                )
+                (
+                    "• Course Overview: Focuses on laboratory testing, medical"
+                    " diagnostics, specimen analysis, and disease detection.\n• Core"
+                    " Subjects: Hematology, Clinical Chemistry, Microbiology,"
+                    " Immunology.\n• Career Opportunities: Medical Laboratory"
+                    " Scientist, Laboratory Analyst, Research Assistant."
+                )
+            ),
+            (
+            "BSPT"
+            "BS Physical Therapy"
+                (
+                "Patient Assessment, Physical Therapy Techniques, Therapeutic Exercise, Rehabilitation, Mobility Training, Manual Therapy, Exercise Prescription, Pain Management, Posture Assessment, Gait Training, Range of Motion Exercises, Muscle Strength Assessment, Injury Prevention, Patient Education, Clinical Documentation, Anatomy, Physiology, Communication, Empathy, Critical Thinking, Problem-Solving, Observation, Teamwork, Time Management, Research, Patient Care, Pagsusuri sa pasyente, Physical therapy techniques, Therapeutic exercise, Rehabilitation, Mobility training, Manual therapy, Pagpaplano ng ehersisyo, Pain management, Pagsusuri ng posture, Gait training, Range of motion exercises, Pagsusuri ng lakas ng kalamnan, Pag-iwas sa injury, Pagtuturo sa pasyente, Clinical documentation, Anatomy, Physiology, Komunikasyon, Empathy, Kritikal na pag-iisip, Paglutas ng problema, Pagmamasid, Teamwork, Pamamahala ng oras, Pananaliksik, Pangangalaga sa pasyente"
+                )
+                (
+                    "• Course Overview: Focuses on patient rehabilitation,"
+                    " physical therapy techniques, movement, and recovery.\n• Core"
+                    " Subjects: Anatomy, Physiology, Therapeutic Exercise,"
+                    " Rehabilitation.\n• Career Opportunities: Physical Therapist,"
+                    " Rehabilitation Specialist, Sports Therapist."
+                )
+            ),
+            (
+            "BSPhar"
+            "BS Pharmacy"
+            (
+                "Pharmacology, Pharmacotherapy, Medication Management, Drug Information, Prescription Reading, Dispensing, Pharmaceutical Calculations, Compounding, Patient Counseling, Medication Safety, Drug Interaction Checking, Inventory Management, Pharmaceutical Care, Clinical Pharmacy, Drug Identification, Quality Control, Research, Documentation, Medical Terminology, Communication, Critical Thinking, Attention to Detail, Problem-Solving, Teamwork, Time Management, Pharmacology, Pharmacotherapy, Pamamahala ng gamot, Impormasyon tungkol sa gamot, Pagbasa ng reseta, Pagbibigay ng gamot, Pharmaceutical calculations, Paghahanda ng gamot, Pagpapayo sa pasyente, Kaligtasan sa paggamit ng gamot, Pagsusuri ng drug interactions, Pamamahala ng inventory, Pharmaceutical care, Clinical pharmacy, Pagkilala sa gamot, Quality control, Pananaliksik, Dokumentasyon, Medical terminology, Komunikasyon, Kritikal na pag-iisip, Pansin sa detalye, Paglutas ng problema, Teamwork, Pamamahala ng oras"
+            )
+            (
+                "• Course Overview: Focuses on medicines, drug preparation,"
+                " pharmaceutical care, and the safe use of medications.\n• Core"
+                " Subjects: Pharmacology, Pharmacotherapy, Pharmaceutical"
+                " Calculations.\n• Career Opportunities: Pharmacist, Clinical"
+                " Pharmacist, Community Pharmacist."
+            )
+            ),
+            (
+            "BSCE"
+            "BS Civil Engineering"
+            (
+                "Structural Design, Construction, Engineering Mathematics, Surveying, Structural Analysis, Geotechnical Engineering, Transportation Engineering, Hydraulics, Hydrology, Construction Management, AutoCAD, Technical Drawing, Building Materials, Project Planning, Cost Estimation, Site Planning, Environmental Engineering, Quality Control, Safety Management, Technical Documentation, Research, Problem-Solving, Analytical Thinking, Critical Thinking, Communication, Teamwork, Project Management, Structural design, Construction, Engineering mathematics, Surveying, Pagsusuri ng structure, Geotechnical engineering, Transportation engineering, Hydraulics, Hydrology, Pamamahala ng construction, AutoCAD, Technical drawing, Mga materyales sa gusali, Pagpaplano ng proyekto, Pagtatantiya ng gastos, Site planning, Environmental engineering, Quality control, Safety management, Teknikal na dokumentasyon, Pananaliksik, Paglutas ng problema, Analytical thinking, Kritikal na pag-iisip, Komunikasyon, Teamwork, Pamamahala ng proyekto"
+            )
+            (
+                "• Course Overview: Focuses on the planning, design,"
+                " construction, and maintenance of buildings and infrastructure.\n•"
+                " Core Subjects: Structural Analysis, Surveying, Geotechnical"
+                " Engineering.\n• Career Opportunities: Civil Engineer,"
+                " Structural Engineer, Construction Engineer."
+            )
+            ),
+            (
+            "BSCE"
+            "BS Computer Engineering"
+            (
+                "Computer Programming, Coding, Computer Hardware, Software Development, Embedded Systems, Microcontrollers, Digital Logic, Computer Architecture, Electronics, Circuit Design, Robotics, Automation, Networking, Operating Systems, Database Management, IoT, Artificial Intelligence, Machine Learning, Hardware Troubleshooting, Software Troubleshooting, System Design, PCB Design, Technical Drawing, Research, Problem-Solving, Logical Thinking, Critical Thinking, Communication, Teamwork, Project Management, Pagpo-program ng computer, Pagko-code, Computer hardware, Pagbuo ng software, Embedded systems, Microcontrollers, Digital logic, Computer architecture, Electronics, Circuit design, Robotics, Automation, Networking, Operating systems, Pamamahala ng database, IoT, Artificial intelligence, Machine learning, Pag-troubleshoot ng hardware, Pag-troubleshoot ng software, Pagdidisenyo ng system, PCB design, Technical drawing, Pananaliksik, Paglutas ng problema, Lohikal na pag-iisip, Kritikal na pag-iisip, Komunikasyon, Teamwork, Pamamahala ng proyekto"
+            )
+            (
+                "• Course Overview: Focuses on computer hardware, software,"
+                " programming, embedded systems, and computer-based technology.\n•"
+                " Core Subjects: Computer Programming, Computer Architecture,"
+                " Embedded Systems.\n• Career Opportunities: Computer Engineer,"
+                " Systems Engineer, Embedded Systems Engineer."
+            )
+            ),
+            (
+            "BSEE"
+            "BS Electronics Engineering"
+            (
+                "Electronics Design, Circuit Analysis, Digital Electronics, Analog Electronics, Telecommunications, Signal Processing, Microcontrollers, Embedded Systems, Robotics, Automation, Communication Systems, Antenna Design, Instrumentation, Control Systems, PCB Design, Electronics Testing, Troubleshooting, Electrical Measurements, Computer Programming, Technical Drawing, CAD, Project Management, Research, Problem-Solving, Analytical Thinking, Critical Thinking, Communication, Teamwork, Pagdidisenyo ng electronics, Pagsusuri ng circuit, Digital electronics, Analog electronics, Telecommunications, Signal processing, Microcontrollers, Embedded systems, Robotics, Automation, Communication systems, Antenna design, Instrumentation, Control systems, PCB design, Electronics testing, Pag-troubleshoot, Electrical measurements, Computer programming, Technical drawing, CAD, Pamamahala ng proyekto, Pananaliksik, Paglutas ng problema, Analytical thinking, Kritikal na pag-iisip, Komunikasyon, Teamwork"
+            )
+            (
+                "• Course Overview: Focuses on electronic devices, circuits,"
+                " communication systems, and electronic technology.\n• Core"
+                " Subjects: Electronics, Circuit Analysis, Telecommunications,"
+                " Signal Processing.\n• Career Opportunities: Electronics"
+                " Engineer, Telecommunications Engineer, Control Systems Engineer."
+            )
+            ),
+            (
+            "BSA"
+            "BS Accountancy"
+            (
+                "Financial Accounting, Bookkeeping, Auditing, Taxation, Cost Accounting, Management Accounting, Financial Analysis, Accounting Information Systems, Financial Reporting, Budgeting, Payroll Accounting, Internal Control, Risk Assessment, Tax Compliance, Business Law, Accounting Standards, Data Analysis, Excel, Research, Attention to Detail, Analytical Thinking, Critical Thinking, Problem-Solving, Communication, Time Management, Organization, Ethics, Teamwork, Financial accounting, Bookkeeping, Auditing, Taxation, Cost accounting, Management accounting, Financial analysis, Accounting information systems, Financial reporting, Pagbabadyet, Payroll accounting, Internal control, Pagsusuri ng panganib, Pagsunod sa tax requirements, Business law, Accounting standards, Pagsusuri ng data, Excel, Pananaliksik, Pansin sa detalye, Analytical thinking, Kritikal na pag-iisip, Paglutas ng problema, Komunikasyon, Pamamahala ng oras, Organisasyon, Etika, Teamwork"
+            )
+            (
+                "• Course Overview: Focuses on accounting, auditing, taxation,"
+                " financial reporting, and business finance.\n• Core Subjects:"
+                " Financial Accounting, Auditing, Taxation, Cost Accounting.\n•"
+                " Career Opportunities: Certified Public Accountant, Auditor,"
+                " Accounting Officer."
+            )
+            ),
+            (
+            "BSMA"
+            "BS Management Accounting"
+            (
+                "Management Accounting, Financial Accounting, Cost Accounting, Budgeting, Financial Analysis, Business Analysis, Accounting Information Systems, Bookkeeping, Financial Reporting, Cost Management, Performance Evaluation, Decision Support, Data Analysis, Excel, Business Planning, Forecasting, Internal Control, Research, Problem-Solving, Analytical Thinking, Critical Thinking, Communication, Time Management, Organization, Leadership, Teamwork, Management accounting, Financial accounting, Cost accounting, Pagbabadyet, Financial analysis, Business analysis, Accounting information systems, Bookkeeping, Financial reporting, Pamamahala ng gastos, Pagsusuri ng performance, Suporta sa pagdedesisyon, Pagsusuri ng data, Excel, Pagpaplano ng negosyo, Forecasting, Internal control, Pananaliksik, Paglutas ng problema, Analytical thinking, Kritikal na pag-iisip, Komunikasyon, Pamamahala ng oras, Organisasyon, Pamumuno, Teamwork"
+            )
+            (
+                "• Course Overview: Focuses on accounting information used for"
+                " business planning, budgeting, cost management, and decision-making.\n•"
+                " Core Subjects: Management Accounting, Cost Accounting, Financial"
+                " Analysis.\n• Career Opportunities: Management Accountant,"
+                " Financial Analyst, Budget Analyst."
+            )
+            ),
+            (
+            "BAPA"
+            "BA Political Science"
+            (
+                "Political Analysis, Public Policy, Government Studies, International Relations, Political Theory, Research, Legal Research, Public Administration, Governance, Diplomacy, Public Speaking, Debate, Communication, Writing, Critical Thinking, Analytical Thinking, Argumentation, Problem-Solving, Decision-Making, Leadership, Community Engagement, Data Analysis, Report Writing, Current Affairs Analysis, Negotiation, Advocacy, Teamwork, Organization, Pagsusuri sa politika, Public policy, Pag-aaral ng pamahalaan, International relations, Political theory, Pananaliksik, Legal research, Public administration, Pamamahala, Diplomacy, Pagsasalita sa publiko, Debate, Komunikasyon, Pagsulat, Kritikal na pag-iisip, Analytical thinking, Pangangatwiran, Paglutas ng problema, Pagdedesisyon, Pamumuno, Pakikilahok sa komunidad, Pagsusuri ng data, Pagsulat ng report, Pagsusuri ng kasalukuyang mga isyu, Negotiation, Advocacy, Teamwork, Organisasyon"
+            )
+            (
+                "• Course Overview: Focuses on politics, government, public"
+                " policy, international relations, and governance.\n• Core Subjects:"
+                " Political Theory, Public Policy, International Relations.\n•"
+                " Career Opportunities: Political Analyst, Government Officer,"
+                " Policy Analyst, Researcher."
+            ),
+            ),
+        ]
+        cur.executemany(
+            "INSERT INTO courses (course_code, course_name, skills, features)"
+            " VALUES (?,?,?,?)",
+            courses_data,
+        )
+        conn.commit()
+    conn.close()
+
+
+    def draw_rounded_rect(canvas, x1, y1, x2, y2, radius=15, **kwargs):
+    """Helper para sa mga rounded corner shapes."""
+    points = [
+        x1 + radius,
+        y1,
+        x1 + radius,
+        y1,
+        x2 - radius,
+        y1,
+        x2 - radius,
+        y1,
+        x2,
+        y1,
+        x2,
+        y1 + radius,
+        x2,
+        y1 + radius,
+        x2,
+        y2 - radius,
+        x2,
+        y2 - radius,
+        x2,
+        y2,
+        x2 - radius,
+        y2,
+        x2 - radius,
+        y2,
+        x1 + radius,
+        y2,
+        x1 + radius,
+        y2,
+        x1,
+        y2,
+        x1,
+        y2 - radius,
+        x1,
+        y2 - radius,
+        x1,
+        y1 + radius,
+        x1,
+        y1 + radius,
+        x1,
+        y1,
+    ]
+    return canvas.create_polygon(points, **kwargs, smooth=True)
+
+
+    class CustomButton(tk.Canvas):
+
+    def __init__(
+        self,
+        parent,
+        text,
+        command=None,
+        width=220,
+        height=42,
+        radius=12,
+        bg_color="#059669",
+        hover_color="#047857",
+        text_color="white",
+        font=("Segoe UI", 10, "bold"),
+    ):
+        super().__init__(
+            parent,
+            width=width,
+            height=height,
+            bg=parent["bg"],
+            highlightthickness=0,
+        )
+        self.command = command
+        self.bg_color = bg_color
+        self.hover_color = hover_color
+
+        self.rect = draw_rounded_rect(
+            self,
+            2,
+            2,
+            width - 2,
+            height - 2,
+            radius=radius,
+            fill=self.bg_color,
+            outline="",
+        )
+        self.text_draw = self.create_text(
+            width / 2, height / 2, text=text, fill=text_color, font=font
+        )
+
+        self.bind("<Enter>", lambda e: self.itemconfig(self.rect, fill=hover_color))
+        self.bind("<Leave>", lambda e: self.itemconfig(self.rect, fill=bg_color))
+        self.bind("<Button-1>", lambda e: self.command() if self.command else None)
+        self.config(cursor="hand2")
+
+
+    def show_phinma_details():
+    phinma_win = tk.Toplevel(root)
+    phinma_win.title("PHINMA Education - Institutional Features")
+    phinma_win.geometry("580x460")
+    phinma_win.config(bg="#F8FAFC")
+    phinma_win.grab_set()
+
+    head_frame = tk.Frame(phinma_win, bg="#0F172A", pady=16)
+    head_frame.pack(fill="x")
+    tk.Label(
+        head_frame,
+        text="PHINMA Education",
+        font=("Segoe UI", 16, "bold"),
+        bg="#0F172A",
+        fg="#34D399",
+    ).pack()
+    tk.Label(
+        head_frame,
+        text="Making Lives Better Through Education",
+        font=("Segoe UI", 10),
+        bg="#0F172A",
+        fg="#94A3B8",
+    ).pack()
+
+    content_frame = tk.Frame(phinma_win, bg="#F8FAFC", padx=20, pady=15)
+    content_frame.pack(fill="both", expand=True)
+
+    txt_box = tk.Text(
+        content_frame,
+        font=("Segoe UI", 10),
+        wrap="word",
+        bg="white",
+        fg="#334155",
+        relief="flat",
+        bd=0,
+        padx=15,
+        pady=15,
+        highlightthickness=1,
+        highlightbackground="#E2E8F0",
+    )
+    txt_box.pack(fill="both", expand=True)
+
+    phinma_features = (
+        "• Mission: To uplift the lives of the low income families in our"
+        " community. We will pursue the mission by:\n\n1. Providing these"
+        " families accessible, relevant, and appropriate training and education"
+        " that leads to employment and an improvement in their economic"
+        " well-being.\n\n2. Producing competent and qualified human resources"
+        " needed by Metro Dagupan, national, and global industries.\n\n3."
+        " Facilitating collaboration among government, industry, and the academe"
+        " as the means to designing programs and curricula that respond to the"
+        " needs of a developing economy.\n\n4. Transforming PHINMA UPang into"
+        " community that celebrates diversity, cross cultural appreciation,"
+        " creativity and collaboration and that serves as a model for"
+        " others.\n\n• Vision: By 2025, to be an educational institution,"
+        " recognized for transforming the lives of its students and their"
+        " families, especially low income families, for the better; and for the"
+        " number of students whose lives it has improved.\n\n• PHINMA Education"
+        " seeks to provide quality tertiary education to underserved Filipino"
+        " youth. Our various learning strategies and interventions equip our"
+        " students with professional and core work skills to attain gainful"
+        " employment, whether or not they graduate. By knowing who our students"
+        " are and where they come from, we are able to tailor our programs to"
+        " what they want to achieve.\n\n• Active Learning Systems: Employs"
+        " innovative teaching methodologies such as Student-Centered Learning,"
+        " peer coaching, and practical skill modules.\n\n• High Board Passing"
+        " Rates: Consistently produces topnotchers and high passing percentages"
+        " in Criminology, Nursing, Education, and Engineering board exams.\n\n•"
+        " Financial Assistance & Scholarships: Offers Hawak Kamay (HK)"
+        " Scholarships, financial aid, and flexible payment terms to help every"
+        " student graduate.\n\n• Industry Partnerships: Strong network of partner"
+        " companies providing internships, job placements, and career readiness"
+        " programs."
+    )
+    txt_box.insert("1.0", phinma_features)
+    txt_box.config(state="disabled")
+
+
+    def show_course_details(code, name, features):
+    detail_win = tk.Toplevel(root)
+    detail_win.title(f"{code} - Course Details")
+    detail_win.geometry("520x420")
+    detail_win.config(bg="#F8FAFC")
+    detail_win.grab_set()
+
+    head_frame = tk.Frame(detail_win, bg="#0F172A", pady=16)
+    head_frame.pack(fill="x")
+    tk.Label(
+        head_frame,
+        text=code,
+        font=("Segoe UI", 18, "bold"),
+        bg="#0F172A",
+        fg="#34D399",
+    ).pack()
+    tk.Label(
+        head_frame,
+        text=name,
+        font=("Segoe UI", 11),
+        bg="#0F172A",
+        fg="#94A3B8",
+    ).pack()
+
+    content_frame = tk.Frame(detail_win, bg="#F8FAFC", padx=20, pady=20)
+    content_frame.pack(fill="both", expand=True)
+
+    txt_box = tk.Text(
+        content_frame,
+        font=("Segoe UI", 10),
+        wrap="word",
+        bg="white",
+        fg="#1E293B",
+        relief="flat",
+        bd=0,
+        padx=15,
+        pady=15,
+        highlightthickness=1,
+        highlightbackground="#CBD5E1",
+    )
+    txt_box.pack(fill="both", expand=True)
+    txt_box.insert("1.0", features)
+    txt_box.config(state="disabled")
+
+
+    def suggest_course():
+    name = entry_name.get().strip()
+    chars_input = entry_chars.get().lower().strip()
+    skills_input = entry_skills.get().lower().strip()
+    interest_input = entry_interest.get().lower().strip()
+
+    if chars_input.startswith("ex:"):
+        chars_input = ""
+    if skills_input.startswith("ex:"):
+        skills_input = ""
+    if interest_input.startswith("ex:"):
+        interest_input = ""
+
+    for widget in course_list_frame.winfo_children():
+        widget.destroy()
+
+    combined_input = f"{chars_input} {skills_input} {interest_input}".strip()
+
+    if not combined_input:
+        reason_label.config(
+            text="Type any in Characteristics, Skills, and Interest.", fg="#EF4444"
+        )
+        return
+
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT course_code, course_name, skills, features FROM courses")
+    all_courses = cur.fetchall()
+    conn.close()
+
+    user_keywords = [
+        k.strip()
+        for k in combined_input.replace(",", "|").split("|")
+        if len(k.strip()) >= 2
+    ]
+    words = combined_input.replace(",", " ").split()
+    user_keywords.extend([w.strip() for w in words if len(w.strip()) >= 3])
+    user_keywords = list(set(user_keywords))
+
+    matched = []
+    for course in all_courses:
+        code, c_name, skills_str, features = course
+        db_keywords = [k.strip() for k in skills_str.lower().split(",")]
+
+        score = sum(
+            1
+            for u in user_keywords
+            for c in db_keywords
+            if u == c or u in c.split() or c in u.split()
+        )
+        if score > 0:
+        matched.append((code, c_name, score, features))
+
+    disp_name = f"Hi {name}!" if name and not name.startswith("Ex:") else "Hi!"
+
+    if not matched:
+        reason_label.config(
+            text=(
+                f"{disp_name} No match. Try: coding, business, travel, or teaching."
+            ),
+            fg="#EF4444",
+        )
+    else:
+        matched_sorted = sorted(matched, key=lambda x: x[2], reverse=True)
+        reason_label.config(
+            text=f"{disp_name} Suggested course that fits you! (Click to view):",
+            fg="#059669",
+        )
+
+        for code, c_name, score, c_features in matched_sorted:
+        card_btn = tk.Frame(
+            course_list_frame,
+            bg="#F1F5F9",
+            padx=12,
+            pady=10,
+            cursor="hand2",
+            highlightthickness=1,
+            highlightbackground="#CBD5E1",
+        )
+        card_btn.pack(fill="x", pady=5, padx=5)
+
+        lbl_code = tk.Label(
+            card_btn,
+            text=f"🎓 {code}",
+            font=("Segoe UI", 11, "bold"),
+            bg="#F1F5F9",
+            fg="#059669",
+            anchor="w",
+        )
+        lbl_code.pack(fill="x")
+
+        lbl_title = tk.Label(
+            card_btn,
+            text=c_name,
+            font=("Segoe UI", 9),
+            bg="#F1F5F9",
+            fg="#334155",
+            anchor="w",
+        )
+        lbl_title.pack(fill="x")
+
+        def bind_click(f, c=code, n=c_name, feat=c_features):
+            f.bind("<Button-1>", lambda e: show_course_details(c, n, feat))
+            for child in f.winfo_children():
+            child.bind("<Button-1>", lambda e: show_course_details(c, n, feat))
+
+        bind_click(card_btn)
+
+
+    # Application Interface
+    create_table()
+    root = tk.Tk()
+    root.title("MyCourse")
+    root.geometry("960x680")
+    root.config(bg="#F8FAFC")
+
+    # Top Header
+    header = tk.Frame(root, bg="#0F172A", pady=22)
+    header.pack(fill="x")
+
+    tk.Label(
+        header,
+        text="MyCourse",
+        font=("Segoe UI", 26, "bold"),
+        bg="#0F172A",
+        fg="#34D399",
+    ).pack()
+    tk.Label(
+        header,
+        text="Discover the perfect college course that fits for your future",
+        font=("Segoe UI", 10),
+        bg="#0F172A",
+        fg="#94A3B8",
+    ).pack(pady=(2, 6))
+
+    phinma_link = tk.Label(
+        header,
+        text="Powered by PHINMA Education",
+        font=("Segoe UI", 9, "bold", "underline"),
+        bg="#0F172A",
+        fg="#10B981",
+        cursor="hand2",
+    )
+    phinma_link.pack()
+    phinma_link.bind("<Button-1>", lambda e: show_phinma_details())
+
+    # Main Container
+    container = tk.Frame(root, bg="#F8FAFC")
+    container.pack(fill="both", expand=True, padx=24, pady=20)
+
+    input_card = tk.Frame(
+        container,
+        bg="white",
+        padx=22,
+        pady=20,
+        highlightthickness=1,
+        highlightbackground="#E2E8F0",
+    )
+    input_card.pack(side="left", fill="both", expand=True, padx=(0, 10))
+
+    tk.Label(
+        input_card,
+        text="Tell Us About Yourself",
+        font=("Segoe UI", 14, "bold"),
+        bg="white",
+        fg="#0F172A",
+    ).pack(anchor="w", pady=(0, 12))
+
+
+    def create_input_field(parent, label_text, placeholder):
+    tk.Label(
+        parent,
+        text=label_text,
+        font=("Segoe UI", 9, "bold"),
+        bg="white",
+        fg="#475569",
+    ).pack(anchor="w", pady=(6, 2))
+    e = tk.Entry(
+        parent,
+        font=("Segoe UI", 10),
+        bg="#F8FAFC",
+        fg="#0F172A",
+        relief="flat",
+        highlightthickness=1,
+        highlightbackground="#CBD5E1",
+        highlightcolor="#059669",
+    )
+    e.pack(fill="x", ipady=6, ipadx=8, pady=(0, 4))
+    e.insert(0, placeholder)
+
+    def on_in(event):
+        if event.widget.get() == placeholder:
+        event.widget.delete(0, "end")
+
+    def on_out(event):
+        if not event.widget.get():
+        event.widget.insert(0, placeholder)
+
+    e.bind("<FocusIn>", on_in)
+    e.bind("<FocusOut>", on_out)
+    return e
+
+
+    entry_name = create_input_field(input_card, "Your Name:", "Ex: Jullian James")
+    entry_chars = create_input_field(
+        input_card, "Characteristics:", "Ex: Helpful, Analytical"
+    )
+    entry_skills = create_input_field(
+        input_card, "Skills:", "Ex: Coding, Mathematics"
+    )
+    entry_interest = create_input_field(
+        input_card, "Interests:", "Ex: Software, Mobile Apps"
+    )
+
+    btn_submit = CustomButton(
+        input_card,
+        text="Find Suggested Courses",
+        command=suggest_course,
+        width=250,
+        height=44,
+        bg_color="#059669",
+        hover_color="#047857",
+    )
+    btn_submit.pack(pady=(16, 0))
+
+    # Output card
+    result_card = tk.Frame(
+        container,
+        bg="white",
+        padx=18,
+        pady=20,
+        highlightthickness=1,
+        highlightbackground="#E2E8F0",
+    )
+    result_card.pack(side="right", fill="both", expand=True, padx=(10, 0))
+
+    reason_label = tk.Label(
+        result_card,
+        text="Enter details and click 'Find Suggested Courses'",
+        font=("Segoe UI", 9, "bold"),
+        bg="white",
+        fg="#475569",
+        wraplength=350,
+        justify="center",
+    )
+    reason_label.pack(pady=(0, 12))
+
+    canvas = tk.Canvas(result_card, bg="white", highlightthickness=0)
+    scrollbar = tk.Scrollbar(result_card, orient="vertical", command=canvas.yview)
+    course_list_frame = tk.Frame(canvas, bg="white")
+
+    course_list_frame.bind(
+        "<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+    )
+    canvas.create_window((0, 0), window=course_list_frame, anchor="nw")
+    canvas.configure(yscrollcommand=scrollbar.set)
+
+    canvas.pack(side="left", fill="both", expand=True)
+    scrollbar.pack(side="right", fill="y")
+
+    root.mainloop()
