@@ -275,6 +275,50 @@ def create_table():
     ]
 
     # -----------------------------------------------------
+    # NORMALIZE DATABASE AND REMOVE DUPLICATE/OBSOLETE ROWS
+    # -----------------------------------------------------
+    # Only keep course codes defined in courses_data. This prevents
+    # old records from appearing alongside the current course list.
+    # Course codes are compared without spaces/punctuation and without
+    # regard to capitalization (e.g. "AB PolSci" == "ABPOLSCI").
+    # For duplicates, keep the first row and remove later copies.
+    # -----------------------------------------------------
+    def normalize_course_code(value):
+        return re.sub(r"[^A-Z0-9]", "", (value or "").upper())
+
+    canonical_codes = {}
+    for code, name, skills, features in courses_data:
+        canonical_codes[normalize_course_code(code)] = code
+
+    cur.execute("SELECT id, course_code FROM courses ORDER BY id")
+    existing_rows = cur.fetchall()
+    seen_codes = set()
+
+    for row_id, stored_code in existing_rows:
+        normalized_code = normalize_course_code(stored_code)
+
+        # Delete any record not part of the current course list.
+        if normalized_code not in canonical_codes:
+            cur.execute("DELETE FROM courses WHERE id = ?", (row_id,))
+            continue
+
+        # Remove duplicate records even if their code uses different
+        # capitalization, spaces, or punctuation.
+        if normalized_code in seen_codes:
+            cur.execute("DELETE FROM courses WHERE id = ?", (row_id,))
+            continue
+
+        seen_codes.add(normalized_code)
+        canonical_code = canonical_codes[normalized_code]
+
+        # Store the exact canonical spelling used by this application.
+        if stored_code != canonical_code:
+            cur.execute(
+                "UPDATE courses SET course_code = ? WHERE id = ?",
+                (canonical_code, row_id)
+            )
+
+    # -----------------------------------------------------
     # INSERT NEW COURSES WITHOUT DELETING EXISTING DATA
     # -----------------------------------------------------
 
