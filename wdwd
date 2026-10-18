@@ -1,0 +1,2168 @@
+
+import sqlite3
+import tkinter as tk
+from tkinter import messagebox
+import os
+
+
+# =========================================================
+# PHINMA COLORS
+# =========================================================
+
+PHINMA_GREEN = "#006B3F"
+PHINMA_DARK = "#004C2B"
+PHINMA_LIGHT = "#EAF6EF"
+PHINMA_GOLD = "#D6A84F"
+
+WHITE = "#FFFFFF"
+BG = "#F4F7F5"
+TEXT = "#18332A"
+MUTED = "#64756D"
+BORDER = "#D8E5DE"
+
+
+# =========================================================
+# DATABASE
+# =========================================================
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(BASE_DIR, "mycourse.db")
+
+
+def get_connection():
+    return sqlite3.connect(DB_PATH)
+
+
+def create_table():
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS courses (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            course_code TEXT NOT NULL UNIQUE,
+            course_name TEXT NOT NULL,
+            skills TEXT NOT NULL,
+            features TEXT NOT NULL
+        )
+    """)
+
+    # =====================================================
+    # ALL 21 COURSES
+    # NO DROP
+    # NO DELETE
+    # NO REPLACE
+    # =====================================================
+
+    courses_data = [
+
+        (
+            "BSIT",
+            "BS Information Technology",
+            "Programming, Coding, Computer Troubleshooting, Hardware Troubleshooting, Software Troubleshooting, Computer Networking, Network Configuration, Database Management, SQL, Web Development, Web Design, Mobile App Development, Software Development, System Administration, Cybersecurity, Information Security, Data Management, Data Analysis, Cloud Computing, Technical Support, IT Support, System Analysis, Systems Development, UI/UX Design, Graphic Design, Computer Hardware, Operating Systems, Computer Maintenance, File Management, Documentation, Research, Problem-Solving, Logical Thinking, Critical Thinking, Communication, Teamwork, Time Management, Project Management, Pagpo-program, Pagko-code, Pag-aayos ng computer, Pag-troubleshoot ng hardware, Pag-troubleshoot ng software, Computer networking, Pag-configure ng network, Pamamahala ng database, SQL, Web development, Web design, Pagbuo ng mobile app, Pagbuo ng software, Pamamahala ng system, Cybersecurity, Seguridad ng impormasyon, Pamamahala ng data, Pagsusuri ng data, Cloud computing, Technical support, IT support, Pagsusuri ng system, Pagbuo ng system, UI/UX design, Graphic design, Computer hardware, Operating systems, Pagpapanatili ng computer, Pamamahala ng files, Dokumentasyon, Pananaliksik, Paglutas ng problema, Lohikal na pag-iisip, Kritikal na pag-iisip, Komunikasyon, Teamwork, Pamamahala ng oras, Pamamahala ng proyekto"
+        ),
+
+        (
+            "BSCS",
+            "BS Computer Science",
+            "Programming, Coding, Algorithms, Data Structures, Software Development, Software Engineering, Object-Oriented Programming, Web Development, Mobile Development, Database Management, SQL, Artificial Intelligence, Machine Learning, Data Science, Data Analysis, Computer Networks, Cybersecurity, Operating Systems, Computer Architecture, Cloud Computing, Game Development, System Design, Algorithm Design, Computational Thinking, Mathematics, Statistics, Research, Debugging, Testing, Problem-Solving, Logical Thinking, Critical Thinking, Communication, Teamwork, Project Management, Pagpo-program, Pagko-code, Algorithms, Data structures, Pagbuo ng software, Software engineering, Object-oriented programming, Web development, Mobile development, Pamamahala ng database, SQL, Artificial intelligence, Machine learning, Data science, Pagsusuri ng data, Computer networks, Cybersecurity, Operating systems, Computer architecture, Cloud computing, Game development, Pagdidisenyo ng system, Pagdidisenyo ng algorithm, Computational thinking, Mathematics, Statistics, Pananaliksik, Pag-debug, Pagsubok ng software, Paglutas ng problema, Lohikal na pag-iisip, Kritikal na pag-iisip, Komunikasyon, Teamwork, Pamamahala ng proyekto"
+        ),
+
+        (
+            "BSEE",
+            "BS Electrical Engineering",
+            "Electrical Design, Circuit Analysis, Electronics, Electrical Installation, Electrical Wiring, Power Systems, Electrical Machines, Control Systems, Instrumentation, Electrical Measurements, Engineering Mathematics, Physics, Technical Drawing, Computer-Aided Design, CAD, Circuit Simulation, Troubleshooting, Electrical Testing, Safety Practices, Electrical Maintenance, Power Distribution, Renewable Energy, Automation, Project Management, Technical Documentation, Research, Problem-Solving, Critical Thinking, Analytical Skills, Communication, Teamwork, Pagdidisenyo ng electrical system, Pagsusuri ng circuit, Electronics, Electrical installation, Electrical wiring, Power systems, Electrical machines, Control systems, Instrumentation, Pagsukat ng kuryente, Engineering mathematics, Physics, Technical drawing, Computer-aided design, CAD, Circuit simulation, Pag-troubleshoot, Electrical testing, Safety practices, Pagpapanatili ng electrical system, Pamamahagi ng kuryente, Renewable energy, Automation, Pamamahala ng proyekto, Teknikal na dokumentasyon, Pananaliksik, Paglutas ng problema, Kritikal na pag-iisip, Analytical skills, Komunikasyon, Teamwork"
+        ),
+
+        (
+            "BSBA",
+            "BS Business Administration",
+            "Business Management, Leadership, Marketing, Digital Marketing, Financial Management, Accounting, Entrepreneurship, Business Planning, Sales, Customer Service, Human Resource Management, Operations Management, Strategic Planning, Business Communication, Public Speaking, Negotiation, Decision-Making, Problem-Solving, Market Research, Data Analysis, Budgeting, Bookkeeping, Project Management, Organization, Time Management, Teamwork, Critical Thinking, Creativity, Networking, Pamamahala ng negosyo, Pamumuno, Marketing, Digital marketing, Pamamahala ng pananalapi, Accounting, Pagnenegosyo, Pagpaplano ng negosyo, Sales, Customer service, Pamamahala ng human resources, Pamamahala ng operasyon, Strategic planning, Komunikasyon sa negosyo, Pagsasalita sa publiko, Negotiation, Pagdedesisyon, Paglutas ng problema, Market research, Pagsusuri ng data, Pagbabadyet, Bookkeeping, Pamamahala ng proyekto, Organisasyon, Pamamahala ng oras, Teamwork, Kritikal na pag-iisip, Pagkamalikhain, Networking"
+        ),
+
+        (
+            "BSTM",
+            "BS Tourism Management",
+            "Tour Planning, Travel Planning, Tour Guiding, Customer Service, Travel Management, Event Planning, Event Management, Hospitality, Hotel Operations, Reservation Management, Ticketing, Travel Agency Operations, Tourism Marketing, Destination Management, Cultural Awareness, Foreign Language, Communication, Public Speaking, Presentation Skills, Problem-Solving, Leadership, Teamwork, Organization, Time Management, Sales, Marketing, Research, Business Planning, Guest Relations, Pagpaplano ng tour, Pagpaplano ng biyahe, Tour guiding, Serbisyo sa customer, Pamamahala ng paglalakbay, Pagpaplano ng event, Pamamahala ng event, Hospitality, Hotel operations, Pamamahala ng reservation, Ticketing, Pamamahala ng travel agency, Tourism marketing, Pamamahala ng destinasyon, Kaalaman sa kultura, Wikang banyaga, Komunikasyon, Pagsasalita sa publiko, Presentation skills, Paglutas ng problema, Pamumuno, Teamwork, Organisasyon, Pamamahala ng oras, Sales, Marketing, Pananaliksik, Pagpaplano ng negosyo, Pakikitungo sa bisita"
+        ),
+
+        (
+            "BSHM",
+            "BS Hospitality Management",
+             "Customer Service, Food Preparation, Cooking, Baking, Food and Beverage Service, Housekeeping, Front Office Operations, Hotel Management, Restaurant Management, Event Management, Hospitality Management, Guest Relations, Reservation Management, Food Safety, Sanitation, Inventory Management, Menu Planning, Table Setting, Bar Service, Kitchen Management, Communication, Leadership, Teamwork, Problem-Solving, Organization, Time Management, Marketing, Sales, Entrepreneurship, Serbisyo sa customer, Paghahanda ng pagkain, Pagluluto, Baking, Food and beverage service, Housekeeping, Front office operations, Pamamahala ng hotel, Pamamahala ng restaurant, Pamamahala ng event, Hospitality management, Pakikitungo sa bisita, Pamamahala ng reservation, Food safety, Kalinisan at sanitation, Pamamahala ng inventory, Pagpaplano ng menu, Paghahanda ng mesa, Bar service, Pamamahala ng kusina, Komunikasyon, Pamumuno, Teamwork, Paglutas ng problema, Organisasyon, Pamamahala ng oras, Marketing, Sales, Pagnenegosyo, bartender"
+        ),
+
+        (
+            "BSCRIM",
+            "BS Criminology",
+            "Criminal Investigation, Crime Prevention, Law Enforcement, Criminal Justice, Forensic Science, Crime Scene Investigation, Evidence Handling, Report Writing, Interviewing, Interrogation, Observation, Surveillance, Public Safety, Security Management, Philippine Law, Criminal Law, Legal Research, Communication, Critical Thinking, Problem-Solving, Decision-Making, Leadership, Teamwork, Research, Documentation, Community Relations, Disaster Response, Imbestigasyon sa krimen, Pag-iwas sa krimen, Pagpapatupad ng batas, Criminal justice, Forensic science, Crime scene investigation, Pangangasiwa ng ebidensya, Pagsulat ng report, Interviewing, Interrogation, Pagmamasid, Surveillance, Kaligtasan ng publiko, Security management, Batas ng Pilipinas, Criminal law, Legal research, Komunikasyon, Kritikal na pag-iisip, Paglutas ng problema, Pagdedesisyon, Pamumuno, Teamwork, Pananaliksik, Dokumentasyon, Pakikipag-ugnayan sa komunidad, Pagtugon sa sakuna"
+        ),
+
+        (
+            "BSED",
+            "BS Education",
+            "Teaching, Lesson Planning, Classroom Management, Educational Assessment, Curriculum Development, Instructional Design, Communication, Public Speaking, Presentation Skills, Educational Technology, Research, Student Counseling, Student Engagement, Subject-Matter Knowledge, Learning Strategies, Leadership, Creativity, Critical Thinking, Problem-Solving, Time Management, Organization, Teamwork, Patience, Adaptability, Writing, Reading, Evaluation, Pagtuturo, Pagpaplano ng lesson, Pamamahala ng classroom, Pagtatasa ng estudyante, Pagbuo ng curriculum, Pagdidisenyo ng instruction, Komunikasyon, Pagsasalita sa publiko, Presentation skills, Educational technology, Pananaliksik, Pagpapayo sa estudyante, Pakikilahok ng estudyante, Kaalaman sa asignatura, Learning strategies, Pamumuno, Pagkamalikhain, Kritikal na pag-iisip, Paglutas ng problema, Pamamahala ng oras, Organisasyon, Teamwork, Pasensya, Kakayahang umangkop, Pagsulat, Pagbabasa, Pagsusuri"
+        ),
+
+        (
+            "BSN",
+            "BS Nursing",
+            "Patient Care, Nursing Care, Clinical Skills, Health Assessment, First Aid, Basic Life Support, Emergency Care, Medication Management, Nursing Procedures, Patient Education, Health Promotion, Disease Prevention, Vital Signs Monitoring, Patient Monitoring, Infection Control, Wound Care, Documentation, Medical Terminology, Communication, Teamwork, Critical Thinking, Problem-Solving, Time Management, Observation, Compassion, Empathy, Stress Management, Research, Leadership, Pangangalaga sa pasyente, Nursing care, Kasanayang klinikal, Pagsusuri sa kalagayan ng pasyente, First aid, Basic life support, Emergency care, Pamamahala ng gamot, Nursing procedures, Pagtuturo sa pasyente, Pagpapaunlad ng kalusugan, Pag-iwas sa sakit, Pagsubaybay sa vital signs, Pagsubaybay sa pasyente, Infection control, Pangangalaga ng sugat, Dokumentasyon, Medical terminology, Komunikasyon, Teamwork, Kritikal na pag-iisip, Paglutas ng problema, Pamamahala ng oras, Pagmamasid, Pagmamalasakit, Empathy, Pamamahala ng stress, Pananaliksik, Pamumuno"
+        ),
+
+        (
+            "BSArch",
+            "BS Architecture",
+            "Architectural Design, Building Design, Drafting, Technical Drawing, Computer-Aided Design, CAD, 3D Modeling, 3D Rendering, Space Planning, Interior Design, Site Planning, Urban Planning, Building Materials, Construction Knowledge, Structural Concepts, Architectural Visualization, Sketching, Perspective Drawing, Model Making, Mathematics, Research, Environmental Design, Sustainable Design, Creativity, Problem-Solving, Critical Thinking, Project Management, Presentation Skills, Communication, Teamwork, Pagdidisenyo ng gusali, Building design, Drafting, Technical drawing, Computer-aided design, CAD, 3D modeling, 3D rendering, Pagpaplano ng espasyo, Interior design, Site planning, Urban planning, Mga materyales sa gusali, Kaalaman sa construction, Structural concepts, Architectural visualization, Sketching, Perspective drawing, Paggawa ng architectural model, Mathematics, Pananaliksik, Environmental design, Sustainable design, Pagkamalikhain, Paglutas ng problema, Kritikal na pag-iisip, Pamamahala ng proyekto, Presentation skills, Komunikasyon, Teamwork"
+        ),
+
+        (
+            "BSML",
+            "BS Medical Laboratory Science",
+            "Laboratory Testing, Clinical Laboratory Skills, Blood Testing, Urinalysis, Hematology, Clinical Chemistry, Microbiology, Immunology, Immunohematology, Parasitology, Histopathology, Specimen Collection, Specimen Processing, Microscope Handling, Laboratory Equipment, Medical Terminology, Quality Control, Infection Control, Data Recording, Documentation, Research, Analytical Skills, Critical Thinking, Attention to Detail, Problem-Solving, Communication, Teamwork, Time Management, Pagsusuri sa laboratoryo, Kasanayan sa clinical laboratory, Pagsusuri ng dugo, Urinalysis, Hematology, Clinical chemistry, Microbiology, Immunology, Immunohematology, Parasitology, Histopathology, Pagkuha ng specimen, Pagproseso ng specimen, Paggamit ng microscope, Paggamit ng laboratory equipment, Medical terminology, Quality control, Infection control, Pagtatala ng data, Dokumentasyon, Pananaliksik, Analytical skills, Kritikal na pag-iisip, Pansin sa detalye, Paglutas ng problema, Komunikasyon, Teamwork, Pamamahala ng oras"
+        ),
+
+        (
+            "BSPT",
+            "BS Physical Therapy",
+            "Patient Assessment, Physical Therapy Techniques, Therapeutic Exercise, Rehabilitation, Mobility Training, Manual Therapy, Exercise Prescription, Pain Management, Posture Assessment, Gait Training, Range of Motion Exercises, Muscle Strength Assessment, Injury Prevention, Patient Education, Clinical Documentation, Anatomy, Physiology, Communication, Empathy, Critical Thinking, Problem-Solving, Observation, Teamwork, Time Management, Research, Patient Care, Pagsusuri sa pasyente, Physical therapy techniques, Therapeutic exercise, Rehabilitation, Mobility training, Manual therapy, Pagpaplano ng ehersisyo, Pain management, Pagsusuri ng posture, Gait training, Range of motion exercises, Pagsusuri ng lakas ng kalamnan, Pag-iwas sa injury, Pagtuturo sa pasyente, Clinical documentation, Anatomy, Physiology, Komunikasyon, Empathy, Kritikal na pag-iisip, Paglutas ng problema, Pagmamasid, Teamwork, Pamamahala ng oras, Pananaliksik, Pangangalaga sa pasyente"
+        ),
+
+        (
+            "BSPhar",
+            "BS Pharmacy",
+            "Pharmacology, Pharmacotherapy, Medication Management, Drug Information, Prescription Reading, Dispensing, Pharmaceutical Calculations, Compounding, Patient Counseling, Medication Safety, Drug Interaction Checking, Inventory Management, Pharmaceutical Care, Clinical Pharmacy, Drug Identification, Quality Control, Research, Documentation, Medical Terminology, Communication, Critical Thinking, Attention to Detail, Problem-Solving, Teamwork, Time Management, Pharmacology, Pharmacotherapy, Pamamahala ng gamot, Impormasyon tungkol sa gamot, Pagbasa ng reseta, Pagbibigay ng gamot, Pharmaceutical calculations, Paghahanda ng gamot, Pagpapayo sa pasyente, Kaligtasan sa paggamit ng gamot, Pagsusuri ng drug interactions, Pamamahala ng inventory, Pharmaceutical care, Clinical pharmacy, Pagkilala sa gamot, Quality control, Pananaliksik, Dokumentasyon, Medical terminology, Komunikasyon, Kritikal na pag-iisip, Pansin sa detalye, Paglutas ng problema, Teamwork, Pamamahala ng oras"
+        ),
+
+        (
+            "BSCE",
+            "BS Civil Engineering",
+            "Structural Design, Construction, Engineering Mathematics, Surveying, Structural Analysis, Geotechnical Engineering, Transportation Engineering, Hydraulics, Hydrology, Construction Management, AutoCAD, Technical Drawing, Building Materials, Project Planning, Cost Estimation, Site Planning, Environmental Engineering, Quality Control, Safety Management, Technical Documentation, Research, Problem-Solving, Analytical Thinking, Critical Thinking, Communication, Teamwork, Project Management, Structural design, Construction, Engineering mathematics, Surveying, Pagsusuri ng structure, Geotechnical engineering, Transportation engineering, Hydraulics, Hydrology, Pamamahala ng construction, AutoCAD, Technical drawing, Mga materyales sa gusali, Pagpaplano ng proyekto, Pagtatantiya ng gastos, Site planning, Environmental engineering, Quality control, Safety management, Teknikal na dokumentasyon, Pananaliksik, Paglutas ng problema, Analytical thinking, Kritikal na pag-iisip, Komunikasyon, Teamwork, Pamamahala ng proyekto"
+        ),
+
+        (
+            "BSCpE",
+            "BS Computer Engineering",
+            "Computer Programming, Coding, Computer Hardware, Software Development, Embedded Systems, Microcontrollers, Digital Logic, Computer Architecture, Electronics, Circuit Design, Robotics, Automation, Networking, Operating Systems, Database Management, IoT, Artificial Intelligence, Machine Learning, Hardware Troubleshooting, Software Troubleshooting, System Design, PCB Design, Technical Drawing, Research, Problem-Solving, Logical Thinking, Critical Thinking, Communication, Teamwork, Project Management, Pagpo-program ng computer, Pagko-code, Computer hardware, Pagbuo ng software, Embedded systems, Microcontrollers, Digital logic, Computer architecture, Electronics, Circuit design, Robotics, Automation, Networking, Operating systems, Pamamahala ng database, IoT, Artificial intelligence, Machine learning, Pag-troubleshoot ng hardware, Pag-troubleshoot ng software, Pagdidisenyo ng system, PCB design, Technical drawing, Pananaliksik, Paglutas ng problema, Lohikal na pag-iisip, Kritikal na pag-iisip, Komunikasyon, Teamwork, Pamamahala ng proyekto"
+        ),
+
+        (
+            "BSECE",
+            "BS Electronics Engineering",
+            "Electronics Design, Circuit Analysis, Digital Electronics, Analog Electronics, Telecommunications, Signal Processing, Microcontrollers, Embedded Systems, Robotics, Automation, Communication Systems, Antenna Design, Instrumentation, Control Systems, PCB Design, Electronics Testing, Troubleshooting, Electrical Measurements, Computer Programming, Technical Drawing, CAD, Project Management, Research, Problem-Solving, Analytical Thinking, Critical Thinking, Communication, Teamwork, Pagdidisenyo ng electronics, Pagsusuri ng circuit, Digital electronics, Analog electronics, Telecommunications, Signal processing, Microcontrollers, Embedded systems, Robotics, Automation, Communication systems, Antenna design, Instrumentation, Control systems, PCB design, Electronics testing, Pag-troubleshoot, Electrical measurements, Computer programming, Technical drawing, CAD, Pamamahala ng proyekto, Pananaliksik, Paglutas ng problema, Analytical thinking, Kritikal na pag-iisip, Komunikasyon, Teamwork"
+        ),
+
+        (
+            "BSA",
+            "BS Accountancy",
+            "Financial Accounting, Bookkeeping, Auditing, Taxation, Cost Accounting, Management Accounting, Financial Analysis, Accounting Information Systems, Financial Reporting, Budgeting, Payroll Accounting, Internal Control, Risk Assessment, Tax Compliance, Business Law, Accounting Standards, Data Analysis, Excel, Research, Attention to Detail, Analytical Thinking, Critical Thinking, Problem-Solving, Communication, Time Management, Organization, Ethics, Teamwork, Financial accounting, Bookkeeping, Auditing, Taxation, Cost accounting, Management accounting, Financial analysis, Accounting information systems, Financial reporting, Pagbabadyet, Payroll accounting, Internal control, Pagsusuri ng panganib, Pagsunod sa tax requirements, Business law, Accounting standards, Pagsusuri ng data, Excel, Pananaliksik, Pansin sa detalye, Analytical thinking, Kritikal na pag-iisip, Paglutas ng problema, Komunikasyon, Pamamahala ng oras, Organisasyon, Etika, Teamwork"
+        ),
+
+        (
+            "BSMA",
+            "BS Management Accounting",
+            "Management Accounting, Financial Accounting, Cost Accounting, Budgeting, Financial Analysis, Business Analysis, Accounting Information Systems, Bookkeeping, Financial Reporting, Cost Management, Performance Evaluation, Decision Support, Data Analysis, Excel, Business Planning, Forecasting, Internal Control, Research, Problem-Solving, Analytical Thinking, Critical Thinking, Communication, Time Management, Organization, Leadership, Teamwork, Management accounting, Financial accounting, Cost accounting, Pagbabadyet, Financial analysis, Business analysis, Accounting information systems, Bookkeeping, Financial reporting, Pamamahala ng gastos, Pagsusuri ng performance, Suporta sa pagdedesisyon, Pagsusuri ng data, Excel, Pagpaplano ng negosyo, Forecasting, Internal control, Pananaliksik, Paglutas ng problema, Analytical thinking, Kritikal na pag-iisip, Komunikasyon, Pamamahala ng oras, Organisasyon, Pamumuno, Teamwork"
+        ),
+
+        (
+            "AB PolSci",
+            "BA Political Science",
+            "Political Analysis, Public Policy, Government Studies, International Relations, Political Theory, Research, Legal Research, Public Administration, Governance, Diplomacy, Public Speaking, Debate, Communication, Writing, Critical Thinking, Analytical Thinking, Argumentation, Problem-Solving, Decision-Making, Leadership, Community Engagement, Data Analysis, Report Writing, Current Affairs Analysis, Negotiation, Advocacy, Teamwork, Organization, Pagsusuri sa politika, Public policy, Pag-aaral ng pamahalaan, International relations, Political theory, Pananaliksik, Legal research, Public administration, Pamamahala, Diplomacy, Pagsasalita sa publiko, Debate, Komunikasyon, Pagsulat, Kritikal na pag-iisip, Analytical thinking, Pangangatwiran, Paglutas ng problema, Pagdedesisyon, Pamumuno, Pakikilahok sa komunidad, Pagsusuri ng data, Pagsulat ng report, Pagsusuri ng kasalukuyang mga isyu, Negotiation, Advocacy, Teamwork, Organisasyon"
+        ),
+
+        (
+            "BSPsych",
+            "BS Psychology",
+            "Communication, Pakikipagkomunikasyon, Critical Thinking, Kritikal na Pag-iisip, Observation, Pagmamasid, Research, Pananaliksik, Counseling, Pagpapayo, Active Listening, Aktibong Pakikinig, Empathy, Pag-unawa sa Damdamin ng Iba, Problem Solving, Paglutas ng Problema, Data Analysis, Pagsusuri ng Datos, Interpersonal Skills, Pakikitungo sa Iba, Behavioral Analysis, Pagsusuri ng Pag-uugali, Decision Making, Paggawa ng Desisyon, Emotional Intelligence, Pag-unawa at Pamamahala ng Emosyon, Psychological Assessment, Pagsusuring Sikolohikal, Case Analysis, Pagsusuri ng Kaso, Human Relations, Pakikipag-ugnayan sa Tao, Conflict Resolution, Paglutas ng Alitan, Report Writing, Pagsulat ng Ulat, Interviewing, Pagsasagawa ng Panayam, Teamwork, Pakikipagtulungan, Leadership, Pamumuno, Attention to Detail, Pagbibigay-pansin sa Detalye, Statistical Analysis, Pagsusuri ng Estadistika, Academic Writing, Akademikong Pagsulat, Mental Health Awareness, Kamalayan sa Kalusugang Pangkaisipan."
+        ),
+
+        (
+            "AB Comm",
+            "BA Communication",
+            "Public Speaking, Pagsasalita sa Harap ng Madla, Writing, Pagsulat, Media Production, Produksyon ng Midya, Communication, Pakikipagkomunikasyon, Presentation Skills, Kasanayan sa Presentasyon, Creative Writing, Malikhaing Pagsulat, Research, Pananaliksik, Digital Media, Digital na Midya, Content Creation, Paglikha ng Nilalaman, Broadcasting, Pagbo-broadcast, Interpersonal Communication, Pakikipagkomunikasyon sa Iba, Teamwork, Pakikipagtulungan, Journalism, Pamamahayag, Social Media Management, Pamamahala ng Social Media, News Writing, Pagsulat ng Balita, Video Production, Produksyon ng Video, Video Editing, Pag-edit ng Video, Photography, Potograpiya, Public Relations, Pakikipag-ugnayan sa Publiko, Advertising, Pag-aanunsyo, Scriptwriting, Pagsulat ng Iskrip, Event Communication, Komunikasyon sa mga Kaganapan, Marketing Communication, Komunikasyon sa Marketing, Media Analysis, Pagsusuri ng Midya, Storytelling, Pagkukuwento, Interviewing, Pagsasagawa ng Panayam, Speech Writing, Pagsulat ng Talumpati, Communication Planning, Pagpaplano ng Komunikasyon, Leadership, Pamumuno, Graphic Design, Disenyong Grapiko, Editing, Pag-eedit, Research Writing, Pagsulat sa Pananaliksik, Information Management, Pamamahala ng Impormasyon, Creative Thinking, Malikhaing Pag-iisip, Audience Analysis, Pagsusuri sa Tagapakinig, Digital Content Management, Pamamahala ng Digital na Nilalaman."
+        ),
+    ]
+
+    cur.executemany("""
+        INSERT OR IGNORE INTO courses
+        (course_code, course_name, skills, features)
+        VALUES (?, ?, ?, ?)
+    """, courses_data)
+
+    conn.commit()
+    conn.close()
+
+
+# =========================================================
+# COURSE INFORMATION
+# =========================================================
+
+COURSE_INFO = {
+
+    "BSN": {
+        "tuition": "₱30,000 – ₱32,000 per semester",
+        "focus": "Patient care, clinical practice, health assessment, community health, and healthcare services.",
+        "careers": "Registered Nurse\nHospital Nurse\nCommunity Health Nurse\nSchool Nurse\nClinical Nurse",
+        "scholarship": "Possible scholarship discounts include 25%, 50%, and 75%."
+    },
+
+    "BSML": {
+        "tuition": "₱30,000 – ₱32,000 per semester",
+        "focus": "Laboratory testing, specimen analysis, diagnostic procedures, and medical laboratory techniques.",
+        "careers": "Medical Laboratory Scientist\nClinical Laboratory Staff\nLaboratory Assistant\nResearch Laboratory Staff",
+        "scholarship": "Possible scholarship discounts include 25%, 50%, and 75%."
+    },
+
+    "BSPhar": {
+        "tuition": "₱28,000 – ₱31,000 per semester",
+        "focus": "Pharmaceutical sciences, medication management, drug information, and patient care.",
+        "careers": "Pharmacist\nCommunity Pharmacist\nHospital Pharmacist\nPharmaceutical Industry Staff",
+        "scholarship": "Possible scholarship discounts include 25%, 50%, and 75%."
+    },
+
+    "BSPT": {
+        "tuition": "₱28,000 – ₱31,000 per semester",
+        "focus": "Physical rehabilitation, movement assessment, therapeutic exercises, and patient care.",
+        "careers": "Physical Therapist\nRehabilitation Staff\nSports Rehabilitation Staff\nClinical Physical Therapy Staff",
+        "scholarship": "Possible scholarship discounts include 25%, 50%, and 75%."
+    },
+
+    "BSPsych": {
+        "tuition": "₱24,000 – ₱28,000 per semester",
+        "focus": "Human behavior, mental processes, psychological assessment, and research.",
+        "careers": "Human Resources Staff\nRecruitment Staff\nGuidance Staff\nResearch Assistant\nBehavioral Science Staff",
+        "scholarship": "Possible scholarship discounts include 25%, 50%, and 75%."
+    },
+
+    "BSIT": {
+        "tuition": "₱31,000 – ₱32,000 per semester",
+        "focus": "Programming, software development, databases, networking, digital solutions, and IT infrastructure.",
+        "careers": "Software Developer\nWeb Developer\nMobile Application Developer\nIT Support Specialist\nSystems Analyst\nDatabase Administrator\nNetwork Administrator",
+        "scholarship": "Possible scholarship discounts include 25%, 50%, and 75%."
+    },
+
+    "BSCE": {
+        "tuition": "₱28,000 – ₱31,000 per semester",
+        "focus": "Structural design, construction, transportation, geotechnical engineering, and infrastructure.",
+        "careers": "Civil Engineer\nStructural Engineer\nConstruction Engineer\nProject Engineer\nSite Engineer",
+        "scholarship": "Possible scholarship discounts include 25%, 50%, and 75%."
+    },
+
+    "BSEE": {
+        "tuition": "₱28,000 – ₱31,000 per semester",
+        "focus": "Electrical systems, power generation, electrical design, control systems, and installations.",
+        "careers": "Electrical Engineer\nPower Systems Engineer\nElectrical Design Engineer\nMaintenance Engineer",
+        "scholarship": "Possible scholarship discounts include 25%, 50%, and 75%."
+    },
+
+    "BSArch": {
+        "tuition": "₱28,000 – ₱31,000 per semester",
+        "focus": "Architectural design, planning, drafting, CAD, building systems, and functional spaces.",
+        "careers": "Architect\nArchitectural Designer\nCAD Specialist\nArchitectural Draftsperson\nDesign Assistant",
+        "scholarship": "Possible scholarship discounts include 25%, 50%, and 75%."
+    },
+
+    "BSCpE": {
+        "tuition": "₱28,000 – ₱31,000 per semester",
+        "focus": "Hardware, software, embedded systems, computer technologies, and electronics.",
+        "careers": "Computer Engineer\nEmbedded Systems Engineer\nHardware Engineer\nSystems Engineer\nNetwork Engineer",
+        "scholarship": "Possible scholarship discounts include 25%, 50%, and 75%."
+    },
+
+    "BSECE": {
+        "tuition": "₱28,000 – ₱31,000 per semester",
+        "focus": "Electronic systems, telecommunications, automation, and communication technologies.",
+        "careers": "Electronics Engineer\nTelecommunications Engineer\nNetwork Engineer\nAutomation Engineer",
+        "scholarship": "Possible scholarship discounts include 25%, 50%, and 75%."
+    },
+
+    "BSA": {
+        "tuition": "₱25,000 – ₱29,000 per semester",
+        "focus": "Accounting, auditing, taxation, financial reporting, and financial management.",
+        "careers": "Accountant\nAuditor\nTax Associate\nFinancial Analyst\nAccounting Staff",
+        "scholarship": "Possible scholarship discounts include 25%, 50%, and 75%."
+    },
+
+    "BSMA": {
+        "tuition": "₱24,000 – ₱28,000 per semester",
+        "focus": "Management accounting, financial analysis, business operations, and accounting information systems.",
+        "careers": "Management Accounting Staff\nAccounting Associate\nFinancial Analyst\nBudget Analyst\nBusiness Analyst",
+        "scholarship": "Possible scholarship discounts include 25%, 50%, and 75%."
+    },
+
+    "BSBA": {
+        "tuition": "₱23,000 – ₱26,000 per semester",
+        "focus": "Business operations, management, marketing, finance, human resources, and entrepreneurship.",
+        "careers": "Business Analyst\nMarketing Staff\nHuman Resources Staff\nSales Executive\nEntrepreneur",
+        "scholarship": "Possible scholarship discounts include 25%, 50%, and 75%."
+    },
+
+    "BSHM": {
+        "tuition": "₱24,000 – ₱28,000 per semester",
+        "focus": "Hotel operations, food and beverage services, hospitality management, and events.",
+        "careers": "Hotel Staff\nFront Office Staff\nFood and Beverage Staff\nEvents Coordinator\nGuest Relations Officer",
+        "scholarship": "Possible scholarship discounts include 25%, 50%, and 75%."
+    },
+
+    "BSTM": {
+        "tuition": "₱24,000 – ₱28,000 per semester",
+        "focus": "Tourism operations, travel services, tour planning, destination management, and customer service.",
+        "careers": "Travel Agent\nTour Coordinator\nTourism Officer\nTour Guide\nAirline Ground Staff",
+        "scholarship": "Possible scholarship discounts include 25%, 50%, and 75%."
+    },
+
+    "BSCRIM": {
+        "tuition": "₱24,000 – ₱28,000 per semester",
+        "focus": "Crime, criminal behavior, law enforcement, investigation, public safety, and criminal justice.",
+        "careers": "Law Enforcement Officer\nPolice Officer\nCorrectional Officer\nCrime Analyst\nInvestigation Staff",
+        "scholarship": "Possible scholarship discounts include 25%, 50%, and 75%."
+    },
+
+    "BSED": {
+        "tuition": "₱20,000 – ₱24,000 per semester",
+        "focus": "Teaching, educational theory, classroom management, curriculum development, and assessment.",
+        "careers": "Elementary School Teacher\nSecondary School Teacher\nTeaching Assistant\nEducation Coordinator\nTutor",
+        "scholarship": "Possible scholarship discounts include 25%, 50%, and 75%."
+    },
+
+    "AB PolSci": {
+        "tuition": "₱20,000 – ₱24,000 per semester",
+        "focus": "Government, politics, public policy, political institutions, and civic affairs.",
+        "careers": "Government Staff\nPolitical Research Assistant\nPublic Administration Staff\nLegislative Staff\nPolicy Researcher",
+        "scholarship": "Possible scholarship discounts include 25%, 50%, and 75%."
+    },
+
+    "AB Comm": {
+        "tuition": "₱20,000 – ₱24,000 per semester",
+        "focus": "Media, broadcasting, digital content, public relations, journalism, and communication.",
+        "careers": "Content Creator\nWriter\nPublic Relations Staff\nSocial Media Specialist\nMedia Staff",
+        "scholarship": "Possible scholarship discounts include 25%, 50%, and 75%."
+    },
+
+    "BSCS": {
+        "tuition": "Check current university rate",
+        "focus": "Programming, algorithms, software development, databases, mathematics, and computer systems.",
+        "careers": "Software Developer\nProgrammer\nSystems Analyst\nData Analyst\nSoftware Engineer",
+        "scholarship": "Scholarship availability depends on eligibility and current scholarship offers."
+    }
+}
+
+
+def get_course_info(code):
+
+    return COURSE_INFO.get(
+        code,
+        {
+            "tuition": "Check current university rate",
+            "focus": "Program-specific academic and professional training.",
+            "careers": "Career opportunities depend on specialization.",
+            "scholarship": "Scholarship availability depends on eligibility and current scholarship offers."
+        }
+    )
+
+
+# =========================================================
+# SCHOLARSHIP CALCULATOR
+# =========================================================
+
+def calculate_scholarship_amount(tuition_text, rate):
+
+    clean_text = (
+        tuition_text
+        .replace("₱", "")
+        .replace(",", "")
+    )
+
+    # Tuition range
+    if "–" in clean_text:
+
+        parts = clean_text.split("–")
+
+        try:
+
+            low = float(parts[0].strip())
+
+            high_text = parts[1].strip()
+
+            high = float(
+                high_text.split()[0]
+            )
+
+            discount_low = low * rate
+            discount_high = high * rate
+
+            payment_low = low - discount_low
+            payment_high = high - discount_high
+
+            return {
+                "original": f"₱{low:,.0f} – ₱{high:,.0f}",
+                "discount": f"₱{discount_low:,.0f} – ₱{discount_high:,.0f}",
+                "payment": f"₱{payment_low:,.0f} – ₱{payment_high:,.0f}"
+            }
+
+        except ValueError:
+
+            return None
+
+    # Single tuition amount
+    try:
+
+        tuition = float(
+            clean_text.split()[0]
+        )
+
+        discount = tuition * rate
+        payment = tuition - discount
+
+        return {
+            "original": f"₱{tuition:,.0f}",
+            "discount": f"₱{discount:,.0f}",
+            "payment": f"₱{payment:,.0f}"
+        }
+
+    except ValueError:
+
+        return None
+
+
+# =========================================================
+# BUTTON
+# =========================================================
+
+def make_button(parent, text, command, bg=PHINMA_GREEN):
+
+    return tk.Button(
+        parent,
+        text=text,
+        command=command,
+        font=("Segoe UI", 9, "bold"),
+        bg=bg,
+        fg=WHITE,
+        activebackground=PHINMA_DARK,
+        activeforeground=WHITE,
+        relief="flat",
+        bd=0,
+        cursor="hand2",
+        padx=12,
+        pady=8
+    )
+
+
+# =========================================================
+# COURSE DETAILS
+# =========================================================
+
+def show_course_details(code, name, features):
+
+    info = get_course_info(code)
+
+    win = tk.Toplevel(root)
+
+    win.title(
+        f"{code} - Course Information"
+    )
+
+    win.geometry(
+        "780x700"
+    )
+
+    win.config(
+        bg=BG
+    )
+
+    header = tk.Frame(
+        win,
+        bg=PHINMA_DARK,
+        height=115
+    )
+
+    header.pack(
+        fill="x"
+    )
+
+    header.pack_propagate(False)
+
+    tk.Frame(
+        header,
+        bg=PHINMA_GOLD,
+        height=5
+    ).pack(
+        fill="x"
+    )
+
+    tk.Label(
+        header,
+        text="PHINMA UNIVERSITY OF PANGASINAN",
+        font=("Segoe UI", 10, "bold"),
+        bg=PHINMA_DARK,
+        fg="#D7EADF"
+    ).pack(
+        pady=(12, 2)
+    )
+
+    tk.Label(
+        header,
+        text=code,
+        font=("Segoe UI", 23, "bold"),
+        bg=PHINMA_DARK,
+        fg=WHITE
+    ).pack()
+
+    tk.Label(
+        header,
+        text=name,
+        font=("Segoe UI", 11),
+        bg=PHINMA_DARK,
+        fg="#C9DDD3"
+    ).pack()
+
+    outer = tk.Frame(
+        win,
+        bg=BG
+    )
+
+    outer.pack(
+        fill="both",
+        expand=True,
+        padx=15,
+        pady=15
+    )
+
+    canvas = tk.Canvas(
+        outer,
+        bg=BG,
+        highlightthickness=0
+    )
+
+    scrollbar = tk.Scrollbar(
+        outer,
+        orient="vertical",
+        command=canvas.yview
+    )
+
+    content = tk.Frame(
+        canvas,
+        bg=WHITE,
+        padx=28,
+        pady=20
+    )
+
+    canvas_window = canvas.create_window(
+        (0, 0),
+        window=content,
+        anchor="nw"
+    )
+
+    def update_scroll(event=None):
+
+        canvas.configure(
+            scrollregion=canvas.bbox("all")
+        )
+
+    def update_width(event):
+
+        canvas.itemconfigure(
+            canvas_window,
+            width=event.width
+        )
+
+    content.bind(
+        "<Configure>",
+        update_scroll
+    )
+
+    canvas.bind(
+        "<Configure>",
+        update_width
+    )
+
+    canvas.configure(
+        yscrollcommand=scrollbar.set
+    )
+
+    canvas.pack(
+        side="left",
+        fill="both",
+        expand=True
+    )
+
+    scrollbar.pack(
+        side="right",
+        fill="y"
+    )
+
+    # =====================================================
+    # SECTION FUNCTION
+    # =====================================================
+
+    def section(title, text):
+
+        frame = tk.Frame(
+            content,
+            bg=WHITE
+        )
+
+        frame.pack(
+            fill="x",
+            pady=(0, 15)
+        )
+
+        tk.Label(
+            frame,
+            text=title,
+            font=("Segoe UI", 10, "bold"),
+            bg=PHINMA_LIGHT,
+            fg=PHINMA_DARK,
+            anchor="w",
+            padx=10,
+            pady=7
+        ).pack(
+            fill="x"
+        )
+
+        tk.Label(
+            frame,
+            text=text,
+            font=("Segoe UI", 10),
+            bg=WHITE,
+            fg=TEXT,
+            justify="left",
+            anchor="w",
+            wraplength=650,
+            padx=5,
+            pady=8
+        ).pack(
+            fill="x"
+        )
+
+    # =====================================================
+    # BASIC COURSE INFORMATION
+    # =====================================================
+
+    section(
+        "LOCATION",
+        "Arellano Street, Downtown District, "
+        "Dagupan City, Pangasinan"
+    )
+
+    section(
+        "PROGRAM FOCUS",
+        info["focus"]
+    )
+
+    section(
+        "ADMISSION REQUIREMENTS",
+        "Applicants must comply with the current admission "
+        "and enrollment requirements of PHINMA University of Pangasinan."
+    )
+
+    section(
+        "TUITION AND FEES",
+        info["tuition"]
+    )
+
+    # =====================================================
+    # SCHOLARSHIP CALCULATOR
+    # =====================================================
+
+    scholarship_frame = tk.Frame(
+        content,
+        bg="#FFF9EA",
+        highlightbackground="#E6D39C",
+        highlightthickness=1
+    )
+
+    scholarship_frame.pack(
+        fill="x",
+        pady=(0, 15)
+    )
+
+    tk.Label(
+        scholarship_frame,
+        text="SCHOLARSHIP CALCULATOR",
+        font=("Segoe UI", 11, "bold"),
+        bg="#FFF9EA",
+        fg="#795B12"
+    ).pack(
+        anchor="w",
+        padx=15,
+        pady=(12, 4)
+    )
+
+    tk.Label(
+        scholarship_frame,
+        text="Select a scholarship percentage to see the "
+             "estimated amount you need to pay.",
+        font=("Segoe UI", 9),
+        bg="#FFF9EA",
+        fg="#5F4A17",
+        justify="left"
+    ).pack(
+        anchor="w",
+        padx=15,
+        pady=(0, 10)
+    )
+
+    scholarship_buttons = tk.Frame(
+        scholarship_frame,
+        bg="#FFF9EA"
+    )
+
+    scholarship_buttons.pack(
+        fill="x",
+        padx=15,
+        pady=(0, 12)
+    )
+
+    # =====================================================
+    # RESULT AREA
+    # =====================================================
+
+    payment_result = tk.Frame(
+        scholarship_frame,
+        bg=WHITE,
+        highlightbackground="#DCCB9A",
+        highlightthickness=1
+    )
+
+    payment_result.pack(
+        fill="x",
+        padx=15,
+        pady=(0, 12)
+    )
+
+    result_title = tk.Label(
+        payment_result,
+        text="SELECT A SCHOLARSHIP",
+        font=("Segoe UI", 11, "bold"),
+        bg=WHITE,
+        fg=PHINMA_GREEN
+    )
+
+    result_title.pack(
+        pady=(12, 6)
+    )
+
+    original_label = tk.Label(
+        payment_result,
+        text="Original Tuition: —",
+        font=("Segoe UI", 9),
+        bg=WHITE,
+        fg=TEXT
+    )
+
+    original_label.pack(
+        pady=2
+    )
+
+    discount_label = tk.Label(
+        payment_result,
+        text="Scholarship Discount: —",
+        font=("Segoe UI", 9),
+        bg=WHITE,
+        fg=TEXT
+    )
+
+    discount_label.pack(
+        pady=2
+    )
+
+    payment_label = tk.Label(
+        payment_result,
+        text="AMOUNT TO PAY: —",
+        font=("Segoe UI", 15, "bold"),
+        bg=WHITE,
+        fg=PHINMA_DARK
+    )
+
+    payment_label.pack(
+        pady=(8, 3)
+    )
+
+    note_label = tk.Label(
+        payment_result,
+        text="Estimated amount per semester.",
+        font=("Segoe UI", 8),
+        bg=WHITE,
+        fg=MUTED
+    )
+
+    note_label.pack(
+        pady=(0, 12)
+    )
+
+    # =====================================================
+    # CLICK SCHOLARSHIP
+    # =====================================================
+
+    def select_scholarship(rate):
+
+        percentage = int(rate * 100)
+
+        result = calculate_scholarship_amount(
+            info["tuition"],
+            rate
+        )
+
+        if result is None:
+
+            result_title.config(
+                text=f"{percentage}% SCHOLARSHIP"
+            )
+
+            original_label.config(
+                text="Original Tuition: Check current university rate"
+            )
+
+            discount_label.config(
+                text="Scholarship Discount: Cannot calculate"
+            )
+
+            payment_label.config(
+                text="AMOUNT TO PAY: Check current rate"
+            )
+
+            return
+
+        result_title.config(
+            text=f"{percentage}% SCHOLARSHIP"
+        )
+
+        original_label.config(
+            text=f"Original Tuition: {result['original']}"
+        )
+
+        discount_label.config(
+            text=f"Scholarship Discount: {result['discount']}"
+        )
+
+        payment_label.config(
+            text=f"AMOUNT TO PAY: {result['payment']}"
+        )
+
+    # =====================================================
+    # SCHOLARSHIP BUTTONS
+    # =====================================================
+
+    for percentage, rate in [
+        ("25%", 0.25),
+        ("50%", 0.50),
+        ("75%", 0.75)
+    ]:
+
+        button = tk.Button(
+            scholarship_buttons,
+            text=percentage,
+            font=("Segoe UI", 13, "bold"),
+            bg=PHINMA_LIGHT,
+            fg=PHINMA_GREEN,
+            activebackground=PHINMA_GREEN,
+            activeforeground=WHITE,
+            relief="flat",
+            bd=0,
+            cursor="hand2",
+            command=lambda r=rate: select_scholarship(r)
+        )
+
+        button.pack(
+            side="left",
+            expand=True,
+            fill="x",
+            padx=4,
+            ipady=8
+        )
+
+    tk.Label(
+        scholarship_frame,
+        text="Possible scholarship discounts: 25% • 50% • 75%",
+        font=("Segoe UI", 9, "bold"),
+        bg="#FFF9EA",
+        fg="#5F4A17"
+    ).pack(
+        anchor="w",
+        padx=15,
+        pady=(0, 12)
+    )
+
+    # =====================================================
+    # OTHER DETAILS
+    # =====================================================
+
+    section(
+        "CAREER OPPORTUNITIES",
+        info["careers"]
+    )
+
+    section(
+        "COURSE DETAILS",
+        features
+    )
+
+
+# =========================================================
+# COURSE CARD
+# =========================================================
+
+def create_course_card(parent, code, name, features):
+
+    info = get_course_info(code)
+
+    card = tk.Frame(
+        parent,
+        bg=WHITE,
+        highlightbackground=BORDER,
+        highlightthickness=1,
+        cursor="hand2"
+    )
+
+    card.grid_propagate(False)
+
+    tk.Frame(
+        card,
+        bg=PHINMA_GREEN,
+        height=5
+    ).pack(
+        fill="x"
+    )
+
+    body = tk.Frame(
+        card,
+        bg=WHITE,
+        padx=12,
+        pady=8
+    )
+
+    body.pack(
+        fill="both",
+        expand=True
+    )
+
+    tk.Label(
+        body,
+        text=code,
+        font=("Segoe UI", 11, "bold"),
+        bg=WHITE,
+        fg=PHINMA_GREEN,
+        anchor="w"
+    ).pack(
+        fill="x"
+    )
+
+    tk.Label(
+        body,
+        text=name,
+        font=("Segoe UI", 9, "bold"),
+        bg=WHITE,
+        fg=TEXT,
+        wraplength=220,
+        justify="left",
+        anchor="w"
+    ).pack(
+        fill="x",
+        pady=(3, 3)
+    )
+
+    tk.Label(
+        body,
+        text=info["tuition"],
+        font=("Segoe UI", 8),
+        bg=WHITE,
+        fg=MUTED,
+        wraplength=220,
+        justify="left",
+        anchor="w"
+    ).pack(
+        fill="x"
+    )
+
+    tk.Label(
+        body,
+        text="VIEW PROGRAM  →",
+        font=("Segoe UI", 8, "bold"),
+        bg=WHITE,
+        fg=PHINMA_GREEN,
+        anchor="w"
+    ).pack(
+        fill="x",
+        pady=(5, 0)
+    )
+
+    def open_course(event=None):
+
+        show_course_details(
+            code,
+            name,
+            features
+        )
+
+    def hover_on(event=None):
+
+        card.config(
+            bg=PHINMA_LIGHT,
+            highlightbackground=PHINMA_GREEN
+        )
+
+        body.config(
+            bg=PHINMA_LIGHT
+        )
+
+        for child in body.winfo_children():
+
+            child.config(
+                bg=PHINMA_LIGHT
+            )
+
+    def hover_off(event=None):
+
+        card.config(
+            bg=WHITE,
+            highlightbackground=BORDER
+        )
+
+        body.config(
+            bg=WHITE
+        )
+
+        for child in body.winfo_children():
+
+            child.config(
+                bg=WHITE
+            )
+
+    card.bind(
+        "<Button-1>",
+        open_course
+    )
+
+    card.bind(
+        "<Enter>",
+        hover_on
+    )
+
+    card.bind(
+        "<Leave>",
+        hover_off
+    )
+
+    for child in body.winfo_children():
+
+        child.bind(
+            "<Button-1>",
+            open_course
+        )
+
+        child.bind(
+            "<Enter>",
+            hover_on
+        )
+
+        child.bind(
+            "<Leave>",
+            hover_off
+        )
+
+    return card
+
+
+# =========================================================
+# DISPLAY COURSES
+# =========================================================
+
+def display_courses(courses, title):
+
+    for widget in course_list_frame.winfo_children():
+
+        widget.destroy()
+
+    result_title.config(
+        text=title
+    )
+
+    for col in range(4):
+
+        course_list_frame.grid_columnconfigure(
+            col,
+            weight=1,
+            uniform="courses"
+        )
+
+    if not courses:
+
+        welcome = tk.Frame(
+            course_list_frame,
+            bg=BG
+        )
+
+        welcome.grid(
+            row=0,
+            column=0,
+            columnspan=4,
+            sticky="nsew",
+            padx=30,
+            pady=80
+        )
+
+        tk.Label(
+            welcome,
+            text="NO MATCHING COURSE",
+            font=("Segoe UI", 16, "bold"),
+            bg=BG,
+            fg=TEXT
+        ).pack()
+
+        tk.Label(
+            welcome,
+            text="Try adding more skills, characteristics, "
+                 "or interests.",
+            font=("Segoe UI", 10),
+            bg=BG,
+            fg=MUTED
+        ).pack(
+            pady=5
+        )
+
+        return
+
+    for i, course in enumerate(courses):
+
+        code, name, features = course
+
+        row = i // 4
+        col = i % 4
+
+        card = create_course_card(
+            course_list_frame,
+            code,
+            name,
+            features
+        )
+
+        card.grid(
+            row=row,
+            column=col,
+            padx=6,
+            pady=6,
+            sticky="nsew"
+        )
+
+
+# =========================================================
+# SHOW ALL COURSES
+# =========================================================
+
+def show_all_courses():
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT course_code, course_name, features
+        FROM courses
+        ORDER BY id
+    """)
+
+    courses = cur.fetchall()
+
+    conn.close()
+
+    display_courses(
+        courses,
+        f"ALL PROGRAMS  •  {len(courses)} COURSES"
+    )
+
+
+# =========================================================
+# RECOMMEND COURSE
+# =========================================================
+
+def suggest_course():
+
+    characteristics = (
+        characteristics_entry.get()
+        .lower()
+        .strip()
+    )
+
+    skills = (
+        skills_entry.get()
+        .lower()
+        .strip()
+    )
+
+    interests = (
+        interests_entry.get()
+        .lower()
+        .strip()
+    )
+
+    combined = (
+        characteristics + " " +
+        skills + " " +
+        interests
+    )
+
+    if not combined.strip():
+
+        messagebox.showwarning(
+            "Missing Information",
+            "Please enter your characteristics, skills, or interests."
+        )
+
+        return
+
+    keywords = [
+        word
+        for word in combined.replace(",", " ").split()
+        if len(word) >= 2
+    ]
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT course_code, course_name, skills, features
+        FROM courses
+        ORDER BY id
+    """)
+
+    courses = cur.fetchall()
+
+    conn.close()
+
+    results = []
+
+    for code, name, course_skills, features in courses:
+
+        searchable = (
+            code + " " +
+            name + " " +
+            course_skills + " " +
+            features
+        ).lower()
+
+        score = 0
+
+        for keyword in keywords:
+
+            if keyword in searchable:
+
+                score += 1
+
+        if score > 0:
+
+            results.append(
+                (
+                    score,
+                    code,
+                    name,
+                    features
+                )
+            )
+
+    results.sort(
+        reverse=True,
+        key=lambda x: x[0]
+    )
+
+    result_courses = []
+
+    for score, code, name, features in results:
+
+        result_courses.append(
+            (
+                code,
+                name,
+                features
+            )
+        )
+
+    display_courses(
+        result_courses,
+        f"RECOMMENDED PROGRAMS  •  {len(result_courses)} MATCHES"
+    )
+
+
+# =========================================================
+# CLEAR
+# =========================================================
+
+def clear_inputs():
+
+    name_entry.delete(
+        0,
+        tk.END
+    )
+
+    characteristics_entry.delete(
+        0,
+        tk.END
+    )
+
+    skills_entry.delete(
+        0,
+        tk.END
+    )
+
+    interests_entry.delete(
+        0,
+        tk.END
+    )
+
+    show_welcome()
+
+    name_entry.focus()
+
+
+# =========================================================
+# WELCOME SCREEN
+# =========================================================
+
+def show_welcome():
+
+    for widget in course_list_frame.winfo_children():
+
+        widget.destroy()
+
+    result_title.config(
+        text="WELCOME TO MYCOURSE"
+    )
+
+    welcome = tk.Frame(
+        course_list_frame,
+        bg=BG
+    )
+
+    welcome.grid(
+        row=0,
+        column=0,
+        columnspan=4,
+        sticky="nsew",
+        padx=30,
+        pady=80
+    )
+
+    tk.Label(
+        welcome,
+        text="FIND THE RIGHT COURSE FOR YOU",
+        font=("Segoe UI", 18, "bold"),
+        bg=BG,
+        fg=PHINMA_DARK
+    ).pack()
+
+    tk.Label(
+        welcome,
+        text="Tell us about your characteristics, skills, "
+             "and interests.",
+        font=("Segoe UI", 10),
+        bg=BG,
+        fg=MUTED
+    ).pack(
+        pady=(6, 3)
+    )
+
+    tk.Label(
+        welcome,
+        text="Then click  FIND MY COURSE  to see your recommendations.",
+        font=("Segoe UI", 10, "bold"),
+        bg=BG,
+        fg=PHINMA_GREEN
+    ).pack()
+
+    tk.Frame(
+        welcome,
+        bg=PHINMA_GOLD,
+        height=3,
+        width=180
+    ).pack(
+        pady=20
+    )
+
+    tk.Label(
+        welcome,
+        text="Want to browse everything?",
+        font=("Segoe UI", 9),
+        bg=BG,
+        fg=MUTED
+    ).pack()
+
+    tk.Label(
+        welcome,
+        text="Click SHOW ALL COURSES.",
+        font=("Segoe UI", 9, "bold"),
+        bg=BG,
+        fg=TEXT
+    ).pack(
+        pady=(2, 0)
+    )
+
+
+# =========================================================
+# PHINMA INFO
+# =========================================================
+
+def show_phinma_info():
+
+    win = tk.Toplevel(root)
+
+    win.title(
+        "PHINMA University of Pangasinan"
+    )
+
+    win.geometry(
+        "720x620"
+    )
+
+    win.config(
+        bg=BG
+    )
+
+    header = tk.Frame(
+        win,
+        bg=PHINMA_DARK,
+        height=125
+    )
+
+    header.pack(
+        fill="x"
+    )
+
+    header.pack_propagate(False)
+
+    tk.Frame(
+        header,
+        bg=PHINMA_GOLD,
+        height=5
+    ).pack(
+        fill="x"
+    )
+
+    tk.Label(
+        header,
+        text="PHINMA",
+        font=("Segoe UI", 23, "bold"),
+        bg=PHINMA_DARK,
+        fg=WHITE
+    ).pack(
+        pady=(15, 0)
+    )
+
+    tk.Label(
+        header,
+        text="UNIVERSITY OF PANGASINAN",
+        font=("Segoe UI", 12, "bold"),
+        bg=PHINMA_DARK,
+        fg="#CDE1D7"
+    ).pack()
+
+    content = tk.Frame(
+        win,
+        bg=WHITE,
+        padx=30,
+        pady=25
+    )
+
+    content.pack(
+        fill="both",
+        expand=True,
+        padx=15,
+        pady=15
+    )
+
+    tk.Label(
+        content,
+        text="LOCATION",
+        font=("Segoe UI", 10, "bold"),
+        bg=WHITE,
+        fg=PHINMA_GREEN
+    ).pack(
+        anchor="w"
+    )
+
+    tk.Label(
+        content,
+        text="Arellano Street, Downtown District,\n"
+             "Dagupan City, Pangasinan",
+        font=("Segoe UI", 10),
+        bg=WHITE,
+        fg=TEXT,
+        justify="left"
+    ).pack(
+        anchor="w",
+        pady=(4, 15)
+    )
+
+    tk.Label(
+        content,
+        text="SCHOLARSHIP DISCOUNTS",
+        font=("Segoe UI", 10, "bold"),
+        bg=WHITE,
+        fg=PHINMA_GREEN
+    ).pack(
+        anchor="w"
+    )
+
+    tk.Label(
+        content,
+        text="Possible scholarship discount levels:",
+        font=("Segoe UI", 10),
+        bg=WHITE,
+        fg=TEXT
+    ).pack(
+        anchor="w",
+        pady=(4, 8)
+    )
+
+    scholarship_frame = tk.Frame(
+        content,
+        bg=WHITE
+    )
+
+    scholarship_frame.pack(
+        fill="x"
+    )
+
+    for percentage in ["25%", "50%", "75%"]:
+
+        box = tk.Frame(
+            scholarship_frame,
+            bg=PHINMA_LIGHT,
+            highlightbackground="#BBDAC8",
+            highlightthickness=1
+        )
+
+        box.pack(
+            side="left",
+            expand=True,
+            fill="x",
+            padx=4
+        )
+
+        tk.Label(
+            box,
+            text=percentage,
+            font=("Segoe UI", 17, "bold"),
+            bg=PHINMA_LIGHT,
+            fg=PHINMA_GREEN
+        ).pack(
+            pady=12
+        )
+
+    tk.Label(
+        content,
+        text="Scholarship availability, eligibility, and coverage "
+             "may vary by program and academic year.",
+        font=("Segoe UI", 9),
+        bg=WHITE,
+        fg=MUTED,
+        justify="left",
+        wraplength=620
+    ).pack(
+        anchor="w",
+        pady=(12, 20)
+    )
+
+    tk.Label(
+        content,
+        text="IMPORTANT",
+        font=("Segoe UI", 10, "bold"),
+        bg=WHITE,
+        fg=PHINMA_GREEN
+    ).pack(
+        anchor="w"
+    )
+
+    tk.Label(
+        content,
+        text="Tuition fees, admission requirements, and scholarship "
+             "coverage may change. Confirm the latest information "
+             "with the university before enrollment.",
+        font=("Segoe UI", 9),
+        bg=WHITE,
+        fg=TEXT,
+        justify="left",
+        wraplength=620
+    ).pack(
+        anchor="w",
+        pady=(4, 15)
+    )
+
+    make_button(
+        content,
+        "CLOSE",
+        win.destroy
+    ).pack(
+        fill="x"
+    )
+
+
+# =========================================================
+# MAIN WINDOW
+# =========================================================
+
+create_table()
+
+root = tk.Tk()
+
+root.title(
+    "MyCourse | PHINMA University of Pangasinan"
+)
+
+root.geometry(
+    "1200x750"
+)
+
+root.minsize(
+    1050,
+    680
+)
+
+root.config(
+    bg=BG
+)
+
+
+# =========================================================
+# HEADER
+# =========================================================
+
+header = tk.Frame(
+    root,
+    bg=PHINMA_DARK,
+    height=90
+)
+
+header.pack(
+    fill="x"
+)
+
+header.pack_propagate(False)
+
+
+tk.Frame(
+    header,
+    bg=PHINMA_GOLD,
+    height=5
+).pack(
+    fill="x"
+)
+
+
+brand = tk.Frame(
+    header,
+    bg=PHINMA_DARK
+)
+
+brand.pack(
+    side="left",
+    padx=25
+)
+
+
+tk.Label(
+    brand,
+    text="PHINMA",
+    font=("Segoe UI", 16, "bold"),
+    bg=PHINMA_DARK,
+    fg=WHITE
+).pack(
+    side="left",
+    padx=(0, 10)
+)
+
+
+tk.Frame(
+    brand,
+    bg=PHINMA_GOLD,
+    width=2,
+    height=40
+).pack(
+    side="left",
+    padx=8
+)
+
+
+title_frame = tk.Frame(
+    brand,
+    bg=PHINMA_DARK
+)
+
+title_frame.pack(
+    side="left"
+)
+
+
+tk.Label(
+    title_frame,
+    text="UNIVERSITY OF PANGASINAN",
+    font=("Segoe UI", 10, "bold"),
+    bg=PHINMA_DARK,
+    fg="#D5E7DE"
+).pack(
+    anchor="w"
+)
+
+
+tk.Label(
+    title_frame,
+    text="MyCourse • Student Course Finder",
+    font=("Segoe UI", 9),
+    bg=PHINMA_DARK,
+    fg="#AFCABE"
+).pack(
+    anchor="w"
+)
+
+
+make_button(
+    header,
+    "PHINMA UPang INFO",
+    show_phinma_info
+).pack(
+    side="right",
+    padx=22
+)
+
+
+# =========================================================
+# MAIN
+# =========================================================
+
+main = tk.Frame(
+    root,
+    bg=BG
+)
+
+main.pack(
+    fill="both",
+    expand=True,
+    padx=18,
+    pady=18
+)
+
+main.grid_columnconfigure(
+    0,
+    minsize=310,
+    weight=0
+)
+
+main.grid_columnconfigure(
+    1,
+    weight=1
+)
+
+main.grid_rowconfigure(
+    0,
+    weight=1
+)
+
+
+# =========================================================
+# LEFT
+# =========================================================
+
+left = tk.Frame(
+    main,
+    bg=WHITE,
+    highlightbackground=BORDER,
+    highlightthickness=1
+)
+
+left.grid(
+    row=0,
+    column=0,
+    sticky="nsew",
+    padx=(0, 12)
+)
+
+
+tk.Frame(
+    left,
+    bg=PHINMA_GREEN,
+    height=7
+).pack(
+    fill="x"
+)
+
+
+left_content = tk.Frame(
+    left,
+    bg=WHITE,
+    padx=22,
+    pady=20
+)
+
+left_content.pack(
+    fill="both",
+    expand=True
+)
+
+
+tk.Label(
+    left_content,
+    text="STUDENT COURSE FINDER",
+    font=("Segoe UI", 11, "bold"),
+    bg=WHITE,
+    fg=PHINMA_GREEN
+).pack(
+    anchor="w"
+)
+
+
+tk.Label(
+    left_content,
+    text="Tell us about you",
+    font=("Segoe UI", 20, "bold"),
+    bg=WHITE,
+    fg=TEXT
+).pack(
+    anchor="w",
+    pady=(3, 4)
+)
+
+
+tk.Label(
+    left_content,
+    text="Enter your characteristics, skills, and interests "
+         "to discover programs that may fit you.",
+    font=("Segoe UI", 9),
+    bg=WHITE,
+    fg=MUTED,
+    wraplength=255,
+    justify="left"
+).pack(
+    anchor="w",
+    pady=(0, 16)
+)
+
+
+def add_label(text):
+
+    tk.Label(
+        left_content,
+        text=text,
+        font=("Segoe UI", 9, "bold"),
+        bg=WHITE,
+        fg=TEXT
+    ).pack(
+        anchor="w",
+        pady=(8, 4)
+    )
+
+
+def add_entry():
+
+    entry = tk.Entry(
+        left_content,
+        font=("Segoe UI", 10),
+        bg="#FAFCFB",
+        fg=TEXT,
+        relief="solid",
+        bd=1
+    )
+
+    entry.pack(
+        fill="x",
+        ipady=7
+    )
+
+    return entry
+
+
+add_label("NAME")
+name_entry = add_entry()
+
+add_label("CHARACTERISTICS")
+characteristics_entry = add_entry()
+
+add_label("SKILLS")
+skills_entry = add_entry()
+
+add_label("INTERESTS")
+interests_entry = add_entry()
+
+
+make_button(
+    left_content,
+    "FIND MY COURSE  →",
+    suggest_course
+).pack(
+    fill="x",
+    pady=(22, 7),
+    ipady=3
+)
+
+
+tk.Button(
+    left_content,
+    text="SHOW ALL COURSES",
+    font=("Segoe UI", 9, "bold"),
+    bg=PHINMA_LIGHT,
+    fg=PHINMA_GREEN,
+    activebackground="#D9EFE3",
+    relief="flat",
+    bd=0,
+    cursor="hand2",
+    command=show_all_courses
+).pack(
+    fill="x",
+    pady=3,
+    ipady=7
+)
+
+
+tk.Button(
+    left_content,
+    text="CLEAR",
+    font=("Segoe UI", 9),
+    bg="#F2F5F3",
+    fg=MUTED,
+    activebackground="#E6ECE8",
+    relief="flat",
+    bd=0,
+    cursor="hand2",
+    command=clear_inputs
+).pack(
+    fill="x",
+    pady=3,
+    ipady=7
+)
+
+
+tk.Frame(
+    left_content,
+    bg=BORDER,
+    height=1
+).pack(
+    fill="x",
+    pady=20
+)
+
+
+tk.Label(
+    left_content,
+    text="PHINMA SCHOLARSHIP GUIDE",
+    font=("Segoe UI", 8, "bold"),
+    bg=WHITE,
+    fg=PHINMA_GREEN
+).pack(
+    anchor="w"
+)
+
+
+tk.Label(
+    left_content,
+    text="Possible scholarship discounts:\n"
+         "25%  •  50%  •  75%",
+    font=("Segoe UI", 9),
+    bg=WHITE,
+    fg=MUTED,
+    justify="left"
+).pack(
+    anchor="w",
+    pady=(4, 0)
+)
+
+
+# =========================================================
+# RIGHT
+# =========================================================
+
+right = tk.Frame(
+    main,
+    bg=WHITE,
+    highlightbackground=BORDER,
+    highlightthickness=1
+)
+
+right.grid(
+    row=0,
+    column=1,
+    sticky="nsew"
+)
+
+right.grid_rowconfigure(
+    1,
+    weight=1
+)
+
+right.grid_columnconfigure(
+    0,
+    weight=1
+)
+
+
+right_header = tk.Frame(
+    right,
+    bg=WHITE,
+    padx=18,
+    pady=15
+)
+
+right_header.grid(
+    row=0,
+    column=0,
+    sticky="ew"
+)
+
+
+tk.Label(
+    right_header,
+    text="EXPLORE PROGRAMS",
+    font=("Segoe UI", 9, "bold"),
+    bg=WHITE,
+    fg=PHINMA_GREEN
+).pack(
+    anchor="w"
+)
+
+
+result_title = tk.Label(
+    right_header,
+    text="WELCOME TO MYCOURSE",
+    font=("Segoe UI", 18, "bold"),
+    bg=WHITE,
+    fg=TEXT
+)
+
+result_title.pack(
+    anchor="w",
+    pady=(2, 0)
+)
+
+
+tk.Label(
+    right_header,
+    text="Click FIND MY COURSE to get recommendations, "
+         "or SHOW ALL COURSES to browse all programs.",
+    font=("Segoe UI", 9),
+    bg=WHITE,
+    fg=MUTED
+).pack(
+    anchor="w",
+    pady=(2, 0)
+)
+
+
+# =========================================================
+# COURSE AREA
+# =========================================================
+
+course_outer = tk.Frame(
+    right,
+    bg=BG
+)
+
+course_outer.grid(
+    row=1,
+    column=0,
+    sticky="nsew",
+    padx=12,
+    pady=(0, 12)
+)
+
+course_outer.grid_rowconfigure(
+    0,
+    weight=1
+)
+
+course_outer.grid_columnconfigure(
+    0,
+    weight=1
+)
+
+
+course_canvas = tk.Canvas(
+    course_outer,
+    bg=BG,
+    highlightthickness=0
+)
+
+course_scrollbar = tk.Scrollbar(
+    course_outer,
+    orient="vertical",
+    command=course_canvas.yview
+)
+
+
+course_list_frame = tk.Frame(
+    course_canvas,
+    bg=BG
+)
+
+
+course_window = course_canvas.create_window(
+    (0, 0),
+    window=course_list_frame,
+    anchor="nw"
+)
+
+
+def update_course_scroll(event=None):
+
+    course_canvas.configure(
+        scrollregion=course_canvas.bbox("all")
+    )
+
+
+def resize_course_frame(event):
+
+    course_canvas.itemconfigure(
+        course_window,
+        width=event.width
+    )
+
+
+course_list_frame.bind(
+    "<Configure>",
+    update_course_scroll
+)
+
+course_canvas.bind(
+    "<Configure>",
+    resize_course_frame
+)
+
+course_canvas.configure(
+    yscrollcommand=course_scrollbar.set
+)
+
+
+course_canvas.grid(
+    row=0,
+    column=0,
+    sticky="nsew"
+)
+
+course_scrollbar.grid(
+    row=0,
+    column=1,
+    sticky="ns"
+)
+
+
+def mousewheel(event):
+
+    course_canvas.yview_scroll(
+        int(-1 * (event.delta / 120)),
+        "units"
+    )
+
+
+course_canvas.bind(
+    "<MouseWheel>",
+    mousewheel
+)
+
+
+# =========================================================
+# START
+# =========================================================
+
+create_table()
+
+show_welcome()
+
+name_entry.focus()
+
+root.mainloop()
